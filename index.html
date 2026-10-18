@@ -40,6 +40,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="64x64" href="favicon-64.png">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<script>if(/^https?:$/.test(location.protocol)){document.write('<base href="/">');}</script>
 <link rel="manifest" href="manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -436,6 +437,24 @@
   .bracket-promo-button { background:#e0b13a; color:#241800; }
   .bracket-promo-button:hover { background:#f0c04d; }
   .promo-bracket-icon { position:relative; display:grid; place-items:center; width:132px; height:132px; border:2px solid rgba(255,209,102,.4); border-radius:26px 26px 38px 38px; background:linear-gradient(145deg,#3a2a06,#160f02); box-shadow:0 18px 38px rgba(0,0,0,.34),inset 0 0 0 6px rgba(255,255,255,.04); font-size:64px; line-height:1; filter:drop-shadow(0 8px 16px rgba(0,0,0,.4)); }
+  .calsync-section { margin:30px 0 36px; padding:22px; border:1px solid rgba(198,12,48,.28); border-radius:22px; background:linear-gradient(135deg,rgba(198,12,48,.10),var(--card-bg-2) 58%,rgba(1,51,105,.10)); }
+  .calsync-kicker { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--text-dim,#888); font-weight:700; }
+  .calsync-title { margin:4px 0 6px; font-size:26px; line-height:1.15; }
+  .calsync-sub { margin:0 0 16px; opacity:.8; max-width:62ch; }
+  .calsync-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+  .calsync-col { min-width:0; }
+  .calsync-label { font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; opacity:.7; margin-bottom:8px; }
+  .calsync-opt { display:flex; gap:10px; align-items:flex-start; padding:9px 12px; margin-bottom:6px; border:1px solid var(--border,rgba(128,128,128,.3)); border-radius:12px; cursor:pointer; background:var(--card-bg,transparent); line-height:1.3; }
+  .calsync-opt input { margin-top:3px; accent-color:#c60c30; }
+  .calsync-select { width:100%; margin-top:4px; padding:10px 12px; border-radius:12px; border:1px solid var(--border,rgba(128,128,128,.3)); background:var(--card-bg,transparent); color:inherit; font:inherit; }
+  .calsync-select[hidden] { display:none; }
+  .calsync-foot { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-top:16px; }
+  .calsync-count { font-weight:700; }
+  .calsync-actions { display:flex; gap:8px; flex-wrap:wrap; }
+  .calsync-btn { padding:11px 18px; border-radius:12px; border:0; background:#c60c30; color:#fff; font:inherit; font-weight:700; cursor:pointer; text-decoration:none; display:inline-block; }
+  .calsync-btn.secondary { background:transparent; color:inherit; border:1px solid var(--border,rgba(128,128,128,.4)); }
+  .calsync-help { font-size:12.5px; opacity:.7; margin:12px 0 0; }
+  @media (max-width:640px) { .calsync-section { padding:16px; } .calsync-grid { grid-template-columns:minmax(0,1fr); } .calsync-title { font-size:22px; } .calsync-actions, .calsync-btn { width:100%; text-align:center; } }
   .personal-section { margin:30px 0 36px; padding:22px; border:1px solid rgba(70,189,127,.28); border-radius:22px; background:linear-gradient(135deg,rgba(70,189,127,.12),var(--card-bg-2) 58%,rgba(198,12,48,.07)); box-shadow:0 18px 46px rgba(0,0,0,.12); }
   .personal-head { display:flex; align-items:end; justify-content:space-between; gap:18px; margin-bottom:17px; }
   .personal-kicker { color:#56c98b; font-size:9px; font-weight:950; letter-spacing:1.5px; text-transform:uppercase; }
@@ -839,6 +858,40 @@
   .game-preview-article .game-preview-lead { margin:0 0 10px; }
   .game-preview-article p { line-height:1.62; }
   .match-key b { font-weight:800; }
+
+  /* ---- Player stats redesign (mobile-first) ---- */
+  .team-profile-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .team-info-panel, .team-history-body, .team-hist-game, .team-hist-stats-wrap, .player-stats-panel, .ps-team { min-width:0; max-width:100%; }
+  .ps-highlights { margin:2px 0 16px; }
+  .ps-hl-head { font-size:10.5px; font-weight:900; letter-spacing:1px; text-transform:uppercase; color:var(--text-tertiary); margin-bottom:8px; }
+  .ps-hl-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  .ps-hl { display:flex; flex-direction:column; gap:3px; padding:10px 11px; border-radius:12px; border:1px solid var(--card-border); background:var(--card-bg-1); border-left:3px solid var(--ps-hl,#46bd7f); min-width:0; }
+  .ps-hl-pass { --ps-hl:#4f9cf7; } .ps-hl-rush { --ps-hl:#46bd7f; } .ps-hl-rec { --ps-hl:#f5b942; } .ps-hl-def { --ps-hl:#ef6a6a; }
+  .ps-hl-title { font-size:9.5px; font-weight:900; letter-spacing:.9px; text-transform:uppercase; color:var(--ps-hl); }
+  .ps-hl-name { font-size:14px; font-weight:800; color:var(--text-primary); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .ps-hl-name .ps-player-link { font-weight:800; }
+  .ps-hl-line { font-size:11.5px; font-weight:700; color:var(--text-secondary); line-height:1.35; }
+  .ps-cat-title { display:flex; align-items:center; justify-content:space-between; gap:8px; padding-left:8px; border-left:3px solid var(--ps-cat-accent,#46bd7f); }
+  .ps-cat-passing { --ps-cat-accent:#4f9cf7; } .ps-cat-rushing { --ps-cat-accent:#46bd7f; } .ps-cat-receiving { --ps-cat-accent:#f5b942; }
+  .ps-cat-defensive, .ps-cat-defense, .ps-cat-interceptions { --ps-cat-accent:#ef6a6a; }
+  .ps-scroll-hint { display:none; font-size:10px; font-weight:700; color:var(--text-tertiary); text-transform:none; letter-spacing:0; }
+  .ps-table td.ps-derived { color:var(--text-primary); font-weight:700; }
+  .ps-table tr.ps-top-row td { background:rgba(245,185,66,.07); }
+  .ps-table tr.ps-top-row td:first-child { box-shadow:inset 3px 0 0 #f5b942; }
+  @media (max-width: 640px) {
+    .team-profile-hero, .team-profile-grid { grid-template-columns:minmax(0,1fr); }
+    .team-profile-body { padding:14px; }
+    .ps-scroll-hint { display:inline; }
+    .ps-table, .player-stats-panel-lg .ps-table { font-size:12.5px; }
+    .ps-table th, .ps-table td, .player-stats-panel-lg .ps-table th, .player-stats-panel-lg .ps-table td { padding:7px 8px; }
+    .ps-table th, .player-stats-panel-lg .ps-table th { font-size:9.5px; letter-spacing:.2px; }
+    .ps-table th:first-child, .ps-table td:first-child { position:sticky; left:0; z-index:1; max-width:118px; overflow:hidden; text-overflow:ellipsis; background:var(--ps-sticky-bg, #131d2e); box-shadow:2px 0 0 var(--divider); }
+    .ps-table tr.ps-top-row td:first-child { box-shadow:inset 3px 0 0 #f5b942, 2px 0 0 var(--divider); }
+    .ps-table td:first-child .ps-player-link { max-width:104px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display:block; text-align:left; }
+    .ps-hl { padding:9px 10px; } .ps-hl-name { font-size:13px; } .ps-hl-line { font-size:11px; }
+    .player-stats-toggle { font-size:11.5px; padding:9px 8px; }
+  }
+  html[data-theme="light"] .ps-table th:first-child, html[data-theme="light"] .ps-table td:first-child { --ps-sticky-bg:#ffffff; }
   .badge.network.chile-stream { background: rgba(17,60,207,0.10); color: #1a3fb0; border-color: rgba(17,60,207,0.35); }
   .main-row {
     position: relative; z-index: 1;
@@ -3491,6 +3544,40 @@
       </div>
     </div>
     <div class="career-promo-visual" aria-hidden="true"><div class="promo-bracket-icon">🏆</div></div>
+  </section>
+
+  <section class="calsync-section" id="agregar-calendario" aria-labelledby="calsync-title">
+    <div class="calsync-head">
+      <div class="calsync-kicker" id="calsync-kicker"></div>
+      <h2 class="calsync-title" id="calsync-title"></h2>
+      <p class="calsync-sub" id="calsync-sub"></p>
+    </div>
+    <div class="calsync-grid">
+      <div class="calsync-col">
+        <div class="calsync-label" id="calsync-scope-label"></div>
+        <label class="calsync-opt"><input type="radio" name="calsync-scope" value="all" checked><span id="calsync-o-all"></span></label>
+        <label class="calsync-opt"><input type="radio" name="calsync-scope" value="fav"><span id="calsync-o-fav"></span></label>
+        <label class="calsync-opt"><input type="radio" name="calsync-scope" value="team"><span id="calsync-o-team"></span></label>
+        <select id="calsync-team" class="calsync-select" aria-label="Equipo"></select>
+      </div>
+      <div class="calsync-col">
+        <div class="calsync-label" id="calsync-extra-label"></div>
+        <label class="calsync-opt"><input type="checkbox" id="calsync-highlight" checked><span id="calsync-o-hl"></span></label>
+        <label class="calsync-opt"><input type="checkbox" id="calsync-prime"><span id="calsync-o-prime"></span></label>
+        <div class="calsync-label" id="calsync-remind-label" style="margin-top:12px"></div>
+        <select id="calsync-remind" class="calsync-select" aria-label="Recordatorio">
+          <option value="0">—</option><option value="30">30 min</option><option value="60" selected>1 h</option><option value="1440">1 día / 1 day</option>
+        </select>
+      </div>
+    </div>
+    <div class="calsync-foot">
+      <div class="calsync-count" id="calsync-count"></div>
+      <div class="calsync-actions">
+        <button type="button" class="calsync-btn" id="calsync-download"></button>
+        <a class="calsync-btn secondary" id="calsync-google" href="https://calendar.google.com/calendar/u/0/r/settings/export" target="_blank" rel="noopener"></a>
+      </div>
+    </div>
+    <p class="calsync-help" id="calsync-help"></p>
   </section>
 
   <section class="personal-section" id="mi-fdc" aria-labelledby="personal-title">
@@ -9346,6 +9433,42 @@ function buildDrivesHtml(summary, awayAbbr, homeAbbr) {
   return rows;
 }
 
+// Spanish short labels for ESPN's box-score column codes (English keeps ESPN's own codes).
+const PS_LABELS_ES = { 'C/ATT':'C/A', 'AVG':'PROM', 'CAR':'ACA', 'LONG':'LARGO', 'TGTS':'OBJ', 'QB HTS':'GOLPES QB', 'LOST':'PERD', 'NO':'N°', 'In 20':'IN 20', 'PCT':'%', 'CMP%':'CMP%', 'CATCH%':'CATCH%' };
+function psLabelFor(label, isEn) { return isEn ? label : (PS_LABELS_ES[label] || label); }
+
+// "Destacados": one card per standout player (top passer / rusher / receiver / defender) so the
+// headline numbers of a team's game are visible at a glance before the full tables.
+function psHighlightsHtml(cats, abbr, isEn) {
+  const defs = [
+    { names:['passing'], title: isEn ? 'Passing' : 'Pasador', sortBy:'YDS', parts:[['C/ATT',''],['YDS',' yds'],['TD',' TD'],['INT',' INT'],['RTG',' RTG']], cls:'pass' },
+    { names:['rushing'], title: isEn ? 'Rushing' : 'Corredor', sortBy:'YDS', parts:[['CAR',' car'],['YDS',' yds'],['TD',' TD']], cls:'rush' },
+    { names:['receiving'], title: isEn ? 'Receiving' : 'Receptor', sortBy:'YDS', parts:[['REC',' rec'],['YDS',' yds'],['TD',' TD']], cls:'rec' },
+    { names:['defensive','defense'], title: isEn ? 'Defense' : 'Defensa', sortBy:'TOT', parts:[['TOT',' tkl'],['SACKS',' sacks'],['PD',' PD']], cls:'def' }
+  ];
+  const cards = defs.map(def => {
+    const cat = cats.find(c => def.names.indexOf(c.name) > -1);
+    if (!cat || !cat.athletes || !cat.athletes.length) return '';
+    const labels = cat.labels || [];
+    const si = labels.indexOf(def.sortBy);
+    const best = cat.athletes.slice().sort((a, b) => (parseFloat((b.stats || [])[si]) || 0) - (parseFloat((a.stats || [])[si]) || 0))[0];
+    if (!best || !best.athlete) return '';
+    const line = def.parts.map(([lab, suffix]) => {
+      const i = labels.indexOf(lab);
+      const v = i > -1 ? (best.stats || [])[i] : null;
+      if (v === undefined || v === null || v === '' || v === '--') return '';
+      if ((lab === 'TD' || lab === 'INT' || lab === 'SACKS' || lab === 'PD') && Number(v) === 0) return '';
+      return v + suffix;
+    }).filter(Boolean).join(' · ');
+    const name = best.athlete.shortName || best.athlete.displayName || '';
+    const nameHtml = best.athlete.id
+      ? '<button type="button" class="ps-player-link" data-player-id="' + best.athlete.id + '" data-player-name="' + escapeRoster(name) + '" data-player-team="' + (ABBR_TEAM[abbr] || '') + '">' + escapeRoster(name) + '</button>'
+      : escapeRoster(name);
+    return '<div class="ps-hl ps-hl-' + def.cls + '"><span class="ps-hl-title">' + def.title + '</span><b class="ps-hl-name">' + nameHtml + '</b><span class="ps-hl-line">' + escapeRoster(line) + '</span></div>';
+  }).join('');
+  return cards ? '<div class="ps-highlights"><div class="ps-hl-head">' + (isEn ? 'Standouts' : 'Destacados') + '</div><div class="ps-hl-grid">' + cards + '</div></div>' : '';
+}
+
 function buildPlayerStatsHtml(summary, panelId, expectedAbbrs) {
   const box = summary && summary.boxscore;
   const teamBlocks = (box && box.players) || [];
@@ -9437,21 +9560,43 @@ function buildPlayerStatsHtml(summary, panelId, expectedAbbrs) {
       return '<div class="ps-team" data-ps-team-content="' + t.abbr + '"' + (t.abbr === activeAbbr ? '' : ' style="display:none"') + '>' +
         (teams.length === 1 ? '<div class="ps-team-name">' + t.abbr + '</div>' : '') + noCatsFallbackHtml(t.abbr) + '</div>';
     }
-    const catsHtml = t.cats.map(cat => {
-      const labels = cat.labels || [];
-      const rows = cat.athletes.map(a => {
+    const catsHtml = psHighlightsHtml(t.cats, t.abbr, isEn) + t.cats.map(cat => {
+      const baseLabels = cat.labels || [];
+      const idxOf = name => baseLabels.indexOf(name);
+      const yi = idxOf('YDS'), ti = idxOf('TOT'), ci = idxOf('C/ATT'), ri = idxOf('REC'), gi = idxOf('TGTS');
+      // Extra, derived columns so the table says more than ESPN's raw labels do.
+      const extraLabels = [];
+      if (cat.name === 'passing' && ci > -1) extraLabels.push('CMP%');
+      if (cat.name === 'receiving' && ri > -1 && gi > -1) extraLabels.push('CATCH%');
+      const labels = baseLabels.concat(extraLabels);
+      // Most productive player first (ESPN's own order is by roster/depth, not by production).
+      const athletes = cat.athletes.slice();
+      const sortIdx = (cat.name === 'defensive' || cat.name === 'defense') ? ti : (cat.name === 'passing' || cat.name === 'rushing' || cat.name === 'receiving') ? yi : -1;
+      if (sortIdx > -1) athletes.sort((a, b) => (parseFloat((b.stats || [])[sortIdx]) || 0) - (parseFloat((a.stats || [])[sortIdx]) || 0));
+      const rows = athletes.map((a, rowIndex) => {
         const name = a.athlete ? (a.athlete.shortName || a.athlete.displayName || '') : '';
         const athleteId = a.athlete && a.athlete.id;
         const nameCell = athleteId
           ? '<button type="button" class="ps-player-link" data-player-id="' + athleteId + '" data-player-name="' + name.replace(/"/g,'&quot;') + '" data-player-team="' + (ABBR_TEAM[t.abbr] || '') + '">' + name + '</button>'
           : name;
         const stats = a.stats || [];
-        return '<tr><td>' + nameCell + '</td>' + labels.map((l, i) => '<td>' + (stats[i] !== undefined ? stats[i] : '-') + '</td>').join('') + '</tr>';
+        const derived = [];
+        if (extraLabels.indexOf('CMP%') > -1) {
+          const m = String(stats[ci] || '').match(/(\d+)\s*\/\s*(\d+)/);
+          derived.push(m && Number(m[2]) ? (Math.round(Number(m[1]) / Number(m[2]) * 1000) / 10).toFixed(1) + '%' : '-');
+        }
+        if (extraLabels.indexOf('CATCH%') > -1) {
+          const rec = parseFloat(stats[ri]), tg = parseFloat(stats[gi]);
+          derived.push(tg > 0 && !isNaN(rec) ? Math.round(rec / tg * 100) + '%' : '-');
+        }
+        const cells = baseLabels.map((l, i) => '<td>' + (stats[i] !== undefined ? stats[i] : '-') + '</td>').concat(derived.map(d => '<td class="ps-derived">' + d + '</td>')).join('');
+        return '<tr' + (rowIndex === 0 && athletes.length > 1 && sortIdx > -1 ? ' class="ps-top-row"' : '') + '><td>' + nameCell + '</td>' + cells + '</tr>';
       }).join('');
+      const headCells = labels.map(l => '<th title="' + escapeRoster(l) + '">' + escapeRoster(psLabelFor(l, isEn)) + '</th>').join('');
       return (
-        '<div class="ps-cat">' +
-          '<div class="ps-cat-title">' + (catLabels[cat.name] || cat.text || cat.name) + '</div>' +
-          '<div class="ps-scroll"><table class="ps-table"><thead><tr><th>' + (isEn ? 'Player' : 'Jugador') + '</th>' + labels.map(l => '<th>' + l + '</th>').join('') + '</tr></thead>' +
+        '<div class="ps-cat ps-cat-' + escapeRoster(cat.name || 'x') + '">' +
+          '<div class="ps-cat-title"><span>' + (catLabels[cat.name] || cat.text || cat.name) + '</span><small class="ps-scroll-hint">' + (isEn ? 'swipe ⟷' : 'desliza ⟷') + '</small></div>' +
+          '<div class="ps-scroll"><table class="ps-table"><thead><tr><th>' + (isEn ? 'Player' : 'Jugador') + '</th>' + headCells + '</tr></thead>' +
           '<tbody>' + rows + '</tbody></table></div>' +
         '</div>'
       );
@@ -10658,6 +10803,7 @@ function applyStaticTranslations() {
   document.getElementById('back-btn').textContent = t('backBtn');
   document.getElementById('export-btn').textContent = t('exportPng');
   document.getElementById('ics-season-btn').textContent = t('exportIcs');
+  if (window.refreshCalSync) window.refreshCalSync();
   document.getElementById('share-btn').textContent = t('shareBtn');
   document.getElementById('champions-title').textContent = t('champTitle');
   document.getElementById('footer-note').innerHTML = t('footerNote');
@@ -12002,7 +12148,7 @@ function renderFeaturedGame(advance) {
     (isPre ? '' : playersToWatchCompactHtml(game)) +
     '</div>' +
     featuredTeamMarkup(game.home, 'home', showScore ? liveInfo.homeScore : undefined);
-  applyFeaturedGameTheme(game.away, game.home);
+  applyFeaturedGameTheme(game.away, game.home, game);
 }
 
 // Dot indicators under the featured card — one per game in the current rotation. Clicking a
@@ -12074,7 +12220,12 @@ const STADIUM_PHOTOS = {
   'Los Angeles Rams': 'assets/stadiums/larams.webp'
 };
 
-function applyFeaturedGameTheme(awayKey, homeKey) {
+// Neutral-site (international) games use the real venue's photo instead of the home team's own stadium.
+const VENUE_PHOTOS = {
+  'Tottenham Hotspur Stadium': 'assets/stadiums/tottenham.webp'
+};
+
+function applyFeaturedGameTheme(awayKey, homeKey, game) {
   const featured = document.getElementById('featured-game');
   if (!featured) return;
   const awayTeam = TEAMS[awayKey], homeTeam = TEAMS[homeKey];
@@ -12082,7 +12233,7 @@ function applyFeaturedGameTheme(awayKey, homeKey) {
   const homePalette = TEAM_THEME_PALETTES[homeKey] || (homeTeam ? [homeTeam.c1, homeTeam.c2] : null);
   featured.style.setProperty('--fg-c1', (awayPalette && awayPalette[0]) || '#0e7549');
   featured.style.setProperty('--fg-c2', (homePalette && homePalette[0]) || '#8e1831');
-  const photo = STADIUM_PHOTOS[homeKey];
+  const photo = (game && game.venue && VENUE_PHOTOS[game.venue.stadium]) || STADIUM_PHOTOS[homeKey];
   const photoLayer = document.getElementById('fg-photo');
   if (photo && photoLayer) {
     photoLayer.style.backgroundImage = "url('" + photo + "')";
@@ -12262,6 +12413,40 @@ document.querySelectorAll('[data-nav]').forEach(button => {
   });
 });
 
+// Clean URL routing (firstdownchile.com/calendario, /mi-fdc ...)
+(function(){
+  if (!/^https?:$/.test(location.protocol)) return;
+  const ROUTES = {'': 'inicio', 'inicio':'inicio', 'calendario':'calendario', 'en-vivo':'en-vivo', 'bracket':'bracket', 'lideres':'lideres', 'rosters':'rosters', 'noticias':'noticias', 'posiciones':'posiciones', 'pretemporada':'pretemporada', 'juegos':'juegos', 'aprende':'aprende', 'mi-fdc':'mi-fdc', 'agregar-calendario':'agregar-calendario'};
+  let navigating = false;
+  function slugNow(){ return decodeURIComponent(location.pathname.replace(/^\/+|\/+$/g,'')).toLowerCase().replace(/\s+/g,'-').replace(/\.html?$/,''); }
+  function go(target){
+    navigating = true;
+    try {
+      if (target === 'agregar-calendario') { closeCareerGame(false); closeStandalonePages(false); setTimeout(() => document.getElementById('agregar-calendario').scrollIntoView({behavior:'smooth',block:'start'}), 50); }
+      else if (target === 'mi-fdc') { closeCareerGame(false); closeStandalonePages(false); setTimeout(() => document.getElementById('mi-fdc').scrollIntoView({behavior:'smooth',block:'center'}), 50); }
+      else { const b = document.querySelector('[data-nav="' + target + '"]'); if (b) b.click(); }
+    } finally { navigating = false; }
+  }
+  function push(target){
+    if (navigating) return;
+    const path = target === 'inicio' ? '/' : '/' + target;
+    if (location.pathname !== path) history.pushState({r:target}, '', path);
+  }
+  document.querySelectorAll('[data-nav]').forEach(b => b.addEventListener('click', () => push(b.dataset.nav)));
+  document.querySelectorAll('[data-mobile-nav]').forEach(b => b.addEventListener('click', () => push(b.dataset.mobileNav)));
+  const favBtn = document.getElementById('favorites-open'); if (favBtn) favBtn.addEventListener('click', () => push('mi-fdc'));
+  // In-page anchors must not leave the current route because of <base href="/">
+  document.addEventListener('click', e => {
+    const a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const id = a.getAttribute('href').slice(1); const el = id && document.getElementById(id);
+    if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+  }, true);
+  window.addEventListener('popstate', () => { const t = ROUTES[slugNow()]; go(t || 'inicio'); });
+  const first = ROUTES[slugNow()];
+  if (first && first !== 'inicio') setTimeout(() => go(first), 0);
+})();
+
 document.getElementById('last-updated').textContent = 'Actualizado ' + new Intl.DateTimeFormat('es-CL', {
   day: '2-digit', month: 'short', year: 'numeric'
 }).format(new Date());
@@ -12281,7 +12466,8 @@ document.getElementById('featured-game').after(document.getElementById('mi-fdc')
 document.getElementById('mi-fdc').after(calendarStage);
 const quickGrid = document.querySelector('.quick-grid');
 calendarStage.after(quickGrid);
-quickGrid.after(document.getElementById('career-promo'));
+quickGrid.after(document.getElementById('agregar-calendario'));
+document.getElementById('agregar-calendario').after(document.getElementById('career-promo'));
 document.getElementById('career-promo').after(document.getElementById('bracket-promo'));
 document.getElementById('bracket-promo').after(document.getElementById('contenido'));
 document.getElementById('contenido').after(document.querySelector('.champions-section'));
@@ -12573,7 +12759,9 @@ function loadHtml2Canvas() {
   return html2canvasLoadPromise;
 }
 document.getElementById('ics-season-btn').addEventListener('click', function () {
-  downloadSeasonICS();
+  closeCareerGame(false); closeStandalonePages(false);
+  if (window.history && /^https?:$/.test(location.protocol) && location.pathname !== '/agregar-calendario') history.pushState({r:'agregar-calendario'}, '', '/agregar-calendario');
+  setTimeout(() => document.getElementById('agregar-calendario').scrollIntoView({behavior:'smooth', block:'start'}), 60);
 });
 document.getElementById('export-btn').addEventListener('click', function () {
   const btn = this;
@@ -12607,24 +12795,39 @@ function toICSDate(isoStr) {
   const d = new Date(isoStr);
   return d.getUTCFullYear() + pad(d.getUTCMonth()+1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + pad(d.getUTCSeconds()) + 'Z';
 }
-function escapeICS(s) { return String(s).replace(/[,;]/g, '\\$&'); }
+function escapeICS(s) { return String(s).replace(/[\\,;]/g, '\\$&').replace(/\n/g, '\\n'); }
 
-function buildICS(games, calName) {
-  let ics = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//NFL Calendario 2026//ES\r\nCALSCALE:GREGORIAN\r\n';
-  games.forEach((g, i) => {
+function foldICS(line) {
+  const out = []; while (line.length > 74) { out.push(line.slice(0, 74)); line = ' ' + line.slice(74); } out.push(line); return out.join('\r\n');
+}
+function buildICS(games, calName, opts) {
+  opts = opts || {};
+  const hl = opts.highlightTeam || '';
+  const remind = opts.remind || 0;
+  let ics = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//First Down Chile//NFL 2026//ES\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\n';
+  ics += 'X-WR-CALNAME:' + escapeICS(calName || 'First Down Chile — NFL 2026') + '\r\n';
+  games.forEach(g => {
     const start = new Date(g.iso);
     const end = new Date(start.getTime() + 3.5 * 3600 * 1000);
     const home = TEAMS[g.home], away = TEAMS[g.away];
+    const isFav = !!hl && (g.home === hl || g.away === hl);
+    let net = '';
+    try { net = (g.network || '') + (hasChileStreaming(g) ? ' · Disney+/ESPN' : ''); } catch (e) {}
     ics += 'BEGIN:VEVENT\r\n';
-    ics += 'UID:nfl2026-w' + g.week + '-' + g.away.replace(/\s+/g,'') + '-' + g.home.replace(/\s+/g,'') + '@nflcalendario\r\n';
+    ics += 'UID:nfl2026-w' + g.week + '-' + g.away.replace(/\s+/g,'') + '-' + g.home.replace(/\s+/g,'') + '@firstdownchile.com\r\n';
     ics += 'DTSTAMP:' + toICSDate(new Date().toISOString()) + '\r\n';
     ics += 'DTSTART:' + toICSDate(g.iso) + '\r\n';
     ics += 'DTEND:' + toICSDate(end.toISOString()) + '\r\n';
-    ics += 'SUMMARY:' + escapeICS(away.name + ' @ ' + home.name + ' (' + t('weekTagPrefix').trim() + ' ' + g.week + ')') + '\r\n';
-    ics += 'LOCATION:' + escapeICS(gameVenueText(g)) + '\r\n';
-    ics += 'DESCRIPTION:' + escapeICS((LANG === 'en'
+    ics += foldICS('SUMMARY:' + (isFav ? '⭐ ' : '🏈 ') + escapeICS(away.name + ' @ ' + home.name + ' (' + t('weekTagPrefix').trim() + ' ' + g.week + ')')) + '\r\n';
+    ics += foldICS('LOCATION:' + escapeICS(gameVenueText(g))) + '\r\n';
+    ics += foldICS('DESCRIPTION:' + escapeICS((LANG === 'en'
       ? 'NFL 2026 — Week ' + g.week + '. ' + away.city + ' ' + away.name + ' visits ' + home.city + ' ' + home.name + '.'
-      : 'NFL 2026 — Semana ' + g.week + '. ' + away.city + ' ' + away.name + ' visita a ' + home.city + ' ' + home.name + '.')) + '\r\n';
+      : 'NFL 2026 — Semana ' + g.week + '. ' + away.city + ' ' + away.name + ' visita a ' + home.city + ' ' + home.name + '.') + (net ? ' TV: ' + net + '.' : '') + ' firstdownchile.com')) + '\r\n';
+    ics += 'CATEGORIES:' + (isFav ? 'NFL,' + (LANG === 'en' ? 'My team' : 'Mi equipo') : 'NFL') + '\r\n';
+    if (isFav) ics += 'PRIORITY:1\r\nCOLOR:' + 'crimson' + '\r\n';
+    if (remind && (!hl || isFav || opts.remindAll)) {
+      ics += 'BEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:' + escapeICS(away.name + ' @ ' + home.name) + '\r\nTRIGGER:-PT' + remind + 'M\r\nEND:VALARM\r\n';
+    }
     ics += 'END:VEVENT\r\n';
   });
   ics += 'END:VCALENDAR\r\n';
@@ -12664,6 +12867,73 @@ function downloadSeasonICS() {
   link.click();
   setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 }
+
+// ---- "Agregar a mi calendario" section ----
+function calSyncState() {
+  const scope = (document.querySelector('input[name="calsync-scope"]:checked') || {}).value || 'all';
+  const sel = document.getElementById('calsync-team');
+  let teamKey = '';
+  if (scope === 'fav') teamKey = favoriteTeam;
+  else if (scope === 'team') teamKey = sel.value;
+  let games = GAMES.slice();
+  if (scope !== 'all') games = teamKey ? games.filter(g => g.home === teamKey || g.away === teamKey) : [];
+  if (document.getElementById('calsync-prime').checked) games = games.filter(g => g.primetime);
+  games.sort((a, b) => a.week - b.week || new Date(a.iso) - new Date(b.iso));
+  return { scope, teamKey, games };
+}
+function refreshCalSync() {
+  const el = document.getElementById('agregar-calendario'); if (!el) return;
+  const en = LANG === 'en';
+  const set = (id, v) => { const n = document.getElementById(id); if (n) n.textContent = v; };
+  set('calsync-kicker', en ? 'Your calendar' : 'Tu calendario');
+  set('calsync-title', en ? 'Add the NFL to my calendar' : 'Agrega la NFL a tu calendario');
+  set('calsync-sub', en ? 'Download every game of the 2026 season (or just your team) and import it into Google Calendar, Apple Calendar or Outlook. Times adjust to your own time zone automatically.' : 'Descarga todos los partidos de la temporada 2026 (o solo los de tu equipo) e impórtalos a Google Calendar, Apple Calendar u Outlook. Los horarios se ajustan solos a tu zona horaria.');
+  set('calsync-scope-label', en ? 'Which games' : 'Qué partidos');
+  set('calsync-o-all', en ? 'The whole NFL season (all games)' : 'Toda la temporada NFL (todos los partidos)');
+  const favName = favoriteTeam && TEAMS[favoriteTeam] ? TEAMS[favoriteTeam].city + ' ' + TEAMS[favoriteTeam].name : '';
+  set('calsync-o-fav', favName ? (en ? 'Only my favorite team: ' : 'Solo mi equipo favorito: ') + favName : (en ? 'Only my favorite team (pick one in “My FDC”)' : 'Solo mi equipo favorito (elígelo en “Mi FDC”)'));
+  set('calsync-o-team', en ? 'Another team' : 'Otro equipo');
+  set('calsync-extra-label', en ? 'Options' : 'Opciones');
+  set('calsync-o-hl', en ? '⭐ Highlight my favorite team’s games (star, priority and reminder)' : '⭐ Destacar los partidos de mi equipo favorito (estrella, prioridad y recordatorio)');
+  set('calsync-o-prime', en ? 'Primetime games only (TNF, SNF, MNF)' : 'Solo partidos estelares (TNF, SNF, MNF)');
+  set('calsync-remind-label', en ? 'Reminder before kickoff' : 'Recordatorio antes del partido');
+  set('calsync-download', en ? '⬇ Download .ics file' : '⬇ Descargar archivo .ics');
+  set('calsync-google', en ? 'Open Google Calendar import' : 'Abrir importar en Google Calendar');
+  const opts = document.getElementById('calsync-remind').options; opts[0].textContent = en ? 'No reminder' : 'Sin recordatorio'; opts[3].textContent = en ? '1 day' : '1 día';
+  const sel = document.getElementById('calsync-team');
+  if (!sel.options.length) {
+    Object.keys(TEAMS).sort((a, b) => (TEAMS[a].city + TEAMS[a].name).localeCompare(TEAMS[b].city + TEAMS[b].name)).forEach(k => { const o = document.createElement('option'); o.value = k; o.textContent = TEAMS[k].city + ' ' + TEAMS[k].name; sel.appendChild(o); });
+    if (favoriteTeam) sel.value = favoriteTeam;
+  }
+  const scopeNow = (document.querySelector('input[name="calsync-scope"]:checked') || {}).value;
+  sel.hidden = scopeNow !== 'team';
+  const hlBox = document.getElementById('calsync-highlight'); hlBox.disabled = !favoriteTeam;
+  const st = calSyncState();
+  set('calsync-count', st.games.length ? st.games.length + (en ? ' games will be added' : ' partidos se agregarán') : (st.scope === 'fav' && !favoriteTeam ? (en ? 'Pick a favorite team first' : 'Primero elige un equipo favorito') : (en ? 'No games match' : 'Ningún partido coincide')));
+  document.getElementById('calsync-download').disabled = !st.games.length;
+  set('calsync-help', en ? 'Tip: on iPhone, open the downloaded file and tap “Add all”. On Google Calendar, use Settings → Import & export → Import and select the file.' : 'Tip: en iPhone abre el archivo descargado y toca “Agregar todo”. En Google Calendar ve a Configuración → Importar y exportar → Importar y elige el archivo.');
+}
+function downloadCalSync() {
+  const st = calSyncState(); if (!st.games.length) return;
+  const hlOn = document.getElementById('calsync-highlight').checked && favoriteTeam;
+  const remind = parseInt(document.getElementById('calsync-remind').value, 10) || 0;
+  const name = st.teamKey ? 'First Down Chile — ' + TEAMS[st.teamKey].name : 'First Down Chile — NFL 2026';
+  const ics = buildICS(st.games, name, { highlightTeam: hlOn ? favoriteTeam : '', remind, remindAll: !hlOn });
+  const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = st.teamKey ? 'FDC_' + TEAMS[st.teamKey].name.replace(/\s+/g, '_') + '_2026.ics' : 'FDC_Calendario_NFL_2026.ics';
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+}
+(function initCalSync() {
+  const el = document.getElementById('agregar-calendario'); if (!el) return;
+  el.addEventListener('change', refreshCalSync);
+  el.addEventListener('pointerenter', refreshCalSync);
+  document.getElementById('calsync-download').addEventListener('click', downloadCalSync);
+  refreshCalSync();
+  window.refreshCalSync = refreshCalSync;
+})();
 
 async function shareSingleGame(game) {
   const away = TEAMS[game.away], home = TEAMS[game.home];
