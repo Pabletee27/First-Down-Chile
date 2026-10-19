@@ -542,6 +542,8 @@
   .roster-player.is-clickable { cursor:pointer; transition:background .15s ease; }
   .roster-player.is-clickable:hover { background:var(--pill-bg); }
   .ps-player-link { background:none; border:0; padding:0; margin:0; color:inherit; font:inherit; cursor:pointer; text-decoration:underline; text-decoration-color:transparent; transition:text-decoration-color .15s ease; }
+  .ps-jersey { display:inline-block; min-width:22px; margin-right:6px; color:var(--text-secondary); font-size:.82em; font-weight:900; font-variant-numeric:tabular-nums; letter-spacing:-.2px; text-align:right; }
+  .rpp-hero-jersey { color:var(--text-secondary); font-weight:950; margin-right:8px; }
   .ps-player-link:hover { text-decoration-color:currentColor; }
 
   .article-hero { position:relative; min-height:220px; padding:34px; display:flex; flex-direction:column; justify-content:end; overflow:hidden; background:linear-gradient(125deg,#0d7047,#07172b 62%,#92182f); color:#fff; }
@@ -5570,7 +5572,7 @@ async function renderSearchResults(rawQuery) {
     const team = TEAMS[p.teamKey];
     const meta = [team.city + ' ' + team.name, p.position].filter(Boolean).join(' · ');
     const clickable = !!p.id;
-    const attrs = clickable ? ' data-player-id="' + escapeRoster(p.id) + '" data-player-name="' + escapeRoster(p.name) + '" data-player-team="' + escapeRoster(p.teamKey) + '"' : '';
+    const attrs = clickable ? ' data-player-id="' + escapeRoster(p.id) + '" data-player-name="' + escapeRoster(p.name) + '" data-player-jersey="' + escapeRoster(String(p.jersey || '')) + '" data-player-team="' + escapeRoster(p.teamKey) + '"' : '';
     return '<button class="search-result" data-search-type="player" data-search-value="' + escapeRoster(p.id || '') + '"' + attrs + '><span class="search-result-icon"><img src="' + teamLogo(p.teamKey) + '" alt="" loading="lazy" decoding="async"></span><span><strong>' + escapeRoster(p.name) + '</strong><small>' + escapeRoster(meta) + '</small></span><span class="search-result-arrow">→</span></button>';
   });
   root.innerHTML = (beforePlayers + group(labels.players,playerRows) + afterPlayers) || '<div class="search-empty">' + labels.noResults + '</div>';
@@ -7398,7 +7400,7 @@ function renderRosterList(teamKey) {
       // Only players with a real ESPN athlete id can open a stats profile — fallback/offline
       // roster entries (no live id) stay as plain, non-clickable rows instead of a dead link.
       const clickable = !!player.id;
-      const attrs = clickable ? ' role="button" tabindex="0" data-player-id="' + escapeRoster(player.id) + '" data-player-name="' + escapeRoster(player.name) + '" data-player-team="' + escapeRoster(teamKey) + '"' : '';
+      const attrs = clickable ? ' role="button" tabindex="0" data-player-id="' + escapeRoster(player.id) + '" data-player-name="' + escapeRoster(player.name) + '" data-player-jersey="' + escapeRoster(String(player.jersey || '')) + '" data-player-team="' + escapeRoster(teamKey) + '"' : '';
       return '<div class="roster-player' + (clickable ? ' is-clickable' : '') + '"' + attrs + '><div class="roster-number">' + (player.jersey ? '#' + escapeRoster(player.jersey) : '-') + '</div>' +
         '<div><div class="roster-name">' + escapeRoster(player.name) + '</div><div class="roster-meta">' + escapeRoster(coreDetails) + collegeSpan + '</div></div>' +
         '<div class="roster-position">' + escapeRoster(player.position || '-') + '</div></div>';
@@ -7473,7 +7475,7 @@ async function renderGlobalRosterSearch(query) {
     const team = TEAMS[player.teamKey];
     const details = [team.city + ' ' + team.name, player.height, player.weight].filter(Boolean).join(' · ');
     const clickable = !!player.id;
-    const attrs = clickable ? ' role="button" tabindex="0" data-player-id="' + escapeRoster(player.id) + '" data-player-name="' + escapeRoster(player.name) + '" data-player-team="' + escapeRoster(player.teamKey) + '"' : '';
+    const attrs = clickable ? ' role="button" tabindex="0" data-player-id="' + escapeRoster(player.id) + '" data-player-name="' + escapeRoster(player.name) + '" data-player-jersey="' + escapeRoster(String(player.jersey || '')) + '" data-player-team="' + escapeRoster(player.teamKey) + '"' : '';
     return '<div class="roster-player' + (clickable ? ' is-clickable' : '') + '"' + attrs + '>' +
       '<img class="roster-result-logo" src="' + teamLogo(player.teamKey) + '" alt="" loading="lazy" decoding="async">' +
       '<div><div class="roster-name">' + escapeRoster(player.name) + '</div><div class="roster-meta">' + escapeRoster(details) + '</div></div>' +
@@ -9691,6 +9693,10 @@ function psLabelFor(label, isEn) { return isEn ? label : (PS_LABELS_ES[label] ||
 
 // "Destacados": one card per standout player (top passer / rusher / receiver / defender) so the
 // headline numbers of a team's game are visible at a glance before the full tables.
+function psJerseyHtml(athlete) {
+  const j = athlete && (athlete.jersey || athlete.number);
+  return j ? '<span class="ps-jersey">#' + escapeRoster(String(j)) + '</span>' : '';
+}
 function psHighlightsHtml(cats, abbr, isEn) {
   const defs = [
     { names:['passing'], title: isEn ? 'Passing' : 'Pasador', sortBy:'YDS', parts:[['C/ATT',''],['YDS',' yds'],['TD',' TD'],['INT',' INT'],['RTG',' RTG']], cls:'pass' },
@@ -9713,9 +9719,9 @@ function psHighlightsHtml(cats, abbr, isEn) {
       return v + suffix;
     }).filter(Boolean).join(' · ');
     const name = best.athlete.shortName || best.athlete.displayName || '';
-    const nameHtml = best.athlete.id
-      ? '<button type="button" class="ps-player-link" data-player-id="' + best.athlete.id + '" data-player-name="' + escapeRoster(name) + '" data-player-team="' + (ABBR_TEAM[abbr] || '') + '">' + escapeRoster(name) + '</button>'
-      : escapeRoster(name);
+    const nameHtml = psJerseyHtml(best.athlete) + (best.athlete.id
+      ? '<button type="button" class="ps-player-link" data-player-id="' + best.athlete.id + '" data-player-name="' + escapeRoster(name) + '" data-player-jersey="' + escapeRoster(String(best.athlete.jersey || '')) + '" data-player-team="' + (ABBR_TEAM[abbr] || '') + '">' + escapeRoster(name) + '</button>'
+      : escapeRoster(name));
     return '<div class="ps-hl ps-hl-' + def.cls + '"><span class="ps-hl-title">' + def.title + '</span><b class="ps-hl-name">' + nameHtml + '</b><span class="ps-hl-line">' + escapeRoster(line) + '</span></div>';
   }).join('');
   return cards ? '<div class="ps-highlights"><div class="ps-hl-head">' + (isEn ? 'Standouts' : 'Destacados') + '</div><div class="ps-hl-grid">' + cards + '</div></div>' : '';
@@ -9828,9 +9834,9 @@ function buildPlayerStatsHtml(summary, panelId, expectedAbbrs) {
       const rows = athletes.map((a, rowIndex) => {
         const name = a.athlete ? (a.athlete.shortName || a.athlete.displayName || '') : '';
         const athleteId = a.athlete && a.athlete.id;
-        const nameCell = athleteId
-          ? '<button type="button" class="ps-player-link" data-player-id="' + athleteId + '" data-player-name="' + name.replace(/"/g,'&quot;') + '" data-player-team="' + (ABBR_TEAM[t.abbr] || '') + '">' + name + '</button>'
-          : name;
+        const nameCell = psJerseyHtml(a.athlete) + (athleteId
+          ? '<button type="button" class="ps-player-link" data-player-id="' + athleteId + '" data-player-name="' + name.replace(/"/g,'&quot;') + '" data-player-jersey="' + escapeRoster(String((a.athlete && a.athlete.jersey) || '')) + '" data-player-team="' + (ABBR_TEAM[t.abbr] || '') + '">' + name + '</button>'
+          : name);
         const stats = a.stats || [];
         const derived = [];
         if (extraLabels.indexOf('CMP%') > -1) {
@@ -10141,9 +10147,9 @@ async function renderPlayerSeasonTab(athleteId, seasontype, year, sectionId) {
   }
 }
 
-function playerModalSkeletonHtml(name, position) {
+function playerModalSkeletonHtml(name, position, jersey) {
   const labels = playerLabels();
-  return '<div class="rpp-hero"><div class="rpp-hero-top"><div><div class="rpp-hero-name">' + name + '</div>' +
+  return '<div class="rpp-hero"><div class="rpp-hero-top"><div><div class="rpp-hero-name">' + (jersey ? '<span class="rpp-hero-jersey">#' + escapeRoster(String(jersey)) + '</span>' : '') + name + '</div>' +
     (position ? '<div class="rpp-hero-meta">' + position + '</div>' : '') + '</div></div></div>' +
     '<div class="rpp-body">' +
       '<div class="rpp-section-title">' + labels.pastSeason + '</div>' +
@@ -10164,14 +10170,14 @@ function playerModalSkeletonHtml(name, position) {
 // The player-profile modal reuses the same generic #modal-overlay used for news articles and the
 // team head-to-head history, swapping the modal-box's mode class and #modal-content's innerHTML —
 // this is the established pattern throughout the site rather than a brand-new overlay.
-async function openNflPlayerProfile(athleteId, name, teamKey) {
+async function openNflPlayerProfile(athleteId, name, teamKey, jersey) {
   if (!athleteId) return;
   trackPageview('/jugador/' + athleteId, 'Jugador · ' + name);
   activePlayerProfile = { athleteId, name, teamKey };
   document.querySelector('.modal-box').classList.remove('match-center', 'article-modal');
   document.querySelector('.modal-box').classList.add('rpp-modal');
   const position = teamKey && TEAMS[teamKey] ? TEAMS[teamKey].city + ' ' + TEAMS[teamKey].name : '';
-  document.getElementById('modal-content').innerHTML = playerModalSkeletonHtml(name, position);
+  document.getElementById('modal-content').innerHTML = playerModalSkeletonHtml(name, position, jersey);
   openModalOverlay();
   renderPlayerSeasonTab(athleteId, 2, 2025, 'player-past-season');
   renderPlayerSeasonTab(athleteId, 1, 2026, 'player-current-1');
@@ -10185,7 +10191,7 @@ document.addEventListener('click', (ev) => {
   const name = trigger.dataset.playerName || '';
   const teamKey = trigger.dataset.playerTeam || '';
   if (!athleteId) return;
-  openNflPlayerProfile(athleteId, name, teamKey);
+  openNflPlayerProfile(athleteId, name, teamKey, trigger.dataset.playerJersey || '');
 });
 // Roster rows use role="button" on a <div> (not a native <button>, to keep the existing roster
 // markup/layout intact) so Enter/Space needs to be wired explicitly for keyboard users.
@@ -10194,7 +10200,7 @@ document.addEventListener('keydown', (ev) => {
   const trigger = ev.target.closest('.roster-player[data-player-id]');
   if (!trigger) return;
   ev.preventDefault();
-  openNflPlayerProfile(trigger.dataset.playerId, trigger.dataset.playerName || '', trigger.dataset.playerTeam || '');
+  openNflPlayerProfile(trigger.dataset.playerId, trigger.dataset.playerName || '', trigger.dataset.playerTeam || '', trigger.dataset.playerJersey || '');
 });
 
 // Switching between Pretemporada / Temporada regular / Playoffs under "Temporada 2026" — loads
@@ -11758,7 +11764,7 @@ function gameCenterRosterGroupsHtml(players, teamKey) {
     const rows = grouped[key].map(player => {
       const details = [player.height, player.weight, player.experience].filter(Boolean).join(' · ');
       const clickable = !!player.id;
-      const attrs = clickable ? ' role="button" tabindex="0" data-player-id="' + escapeRoster(player.id) + '" data-player-name="' + escapeRoster(player.name) + '" data-player-team="' + escapeRoster(teamKey) + '"' : '';
+      const attrs = clickable ? ' role="button" tabindex="0" data-player-id="' + escapeRoster(player.id) + '" data-player-name="' + escapeRoster(player.name) + '" data-player-jersey="' + escapeRoster(String(player.jersey || '')) + '" data-player-team="' + escapeRoster(teamKey) + '"' : '';
       return '<div class="roster-player' + (clickable ? ' is-clickable' : '') + '"' + attrs + '><div class="roster-number">' + (player.jersey ? '#' + escapeRoster(player.jersey) : '-') + '</div>' +
         '<div><div class="roster-name">' + escapeRoster(player.name) + '</div><div class="roster-meta">' + escapeRoster(details || 'Roster NFL') + '</div></div>' +
         '<div class="roster-position">' + escapeRoster(player.position || '-') + '</div></div>';
