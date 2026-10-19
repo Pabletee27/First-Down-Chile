@@ -536,6 +536,20 @@
   .rpp-game-row .rpp-result { font-weight:900; }
   .rpp-game-row .rpp-result.win { color:#46bd7f; }
   .rpp-game-row .rpp-result.loss { color:#ef4444; }
+  .week-leaders { margin:14px 0 18px; border:1px solid var(--card-border); border-radius:16px; background:var(--card-bg-1); padding:0 14px 12px; }
+  .week-leaders > summary { list-style:none; cursor:pointer; padding:14px 2px; font-weight:950; font-size:15px; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; }
+  .week-leaders > summary::-webkit-details-marker { display:none; } .week-leaders > summary small { color:var(--text-tertiary); font-size:11px; font-weight:800; }
+  .week-leaders > summary:after { content:'▾'; margin-left:auto; color:var(--text-tertiary); transition:transform .2s; } .week-leaders[open] > summary:after { transform:rotate(180deg); }
+  .wl-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:10px; }
+  .wl-card { border:1px solid var(--card-border); border-radius:13px; padding:10px 11px; background:rgba(255,255,255,.025); }
+  .wl-title { font-size:11px; font-weight:950; letter-spacing:.5px; text-transform:uppercase; color:var(--text-secondary); margin-bottom:7px; }
+  .wl-row { display:grid; grid-template-columns:16px 24px 1fr auto; gap:8px; align-items:center; padding:5px 2px; font-size:12px; border-top:1px solid rgba(255,255,255,.05); }
+  .wl-row:first-of-type { border-top:0; } .wl-row[data-team-profile] { cursor:pointer; }
+  .wl-rank { color:var(--text-tertiary); font-weight:900; font-size:11px; text-align:center; } .wl-row img { width:24px; height:24px; object-fit:contain; }
+  .wl-name { min-width:0; display:flex; flex-direction:column; } .wl-name b { font-size:12.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .wl-name small { font-size:10px; color:var(--text-tertiary); font-weight:700; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .wl-val { font-weight:950; font-size:15px; text-align:right; } .wl-val i { font-style:normal; font-size:9px; color:var(--text-tertiary); margin-left:3px; font-weight:800; text-transform:uppercase; }
+  .wl-first .wl-name b { font-size:14px; } .wl-first .wl-val { font-size:19px; color:#46bd7f; }
+  .wl-loading,.wl-empty,.wl-source { color:var(--text-tertiary); font-size:11px; padding:6px 2px; } .wl-source { margin-top:10px; }
   .rpp-glog > summary { list-style:none; cursor:pointer; } .rpp-glog > summary::-webkit-details-marker { display:none; }
   .rpp-glog > summary:after { content:'▾'; color:var(--text-tertiary); margin-left:8px; transition:transform .2s; } .rpp-glog[open] > summary:after { transform:rotate(180deg); }
   .rpp-glog > summary.rpp-game-row { grid-template-columns:auto 1fr auto auto; }
@@ -3746,6 +3760,7 @@
       <div class="week-heading" id="week-heading"></div>
       <div class="week-dates" id="week-dates"></div>
       <div id="bye-line"></div>
+      <div id="week-leaders"></div>
       <div id="games"></div>
     </div>
   </div>
@@ -6741,6 +6756,77 @@ function setTodayGamesCollapsed(collapsed) {
   }
 }
 
+// ---------- Líderes de la semana (Calendario) ----------
+// Same nflverse-backed /api/leaders endpoint as the season leaders page, but asked for ONE week.
+// If the deployed function is an older build that ignores ?week=, the response has no "week" field,
+// so the code falls back to slicing the season leaders' own per-game rows for that week.
+const WEEK_LEADER_CATS = [
+  { key:'passingYards', icon:'🏈', es:'Yardas de pase', en:'Passing yards', unit:'yd' },
+  { key:'rushingYards', icon:'🏃', es:'Yardas terrestres', en:'Rushing yards', unit:'yd' },
+  { key:'receivingYards', icon:'🙌', es:'Yardas de recepción', en:'Receiving yards', unit:'yd' },
+  { key:'receptions', icon:'🧤', es:'Recepciones', en:'Receptions', unit:'rec' },
+  { key:'passingTouchdowns', icon:'🎯', es:'TD de pase', en:'Passing TD', unit:'TD' },
+  { key:'rushingTouchdowns', icon:'💨', es:'TD terrestres', en:'Rushing TD', unit:'TD' },
+  { key:'receivingTouchdowns', icon:'🔥', es:'TD de recepción', en:'Receiving TD', unit:'TD' },
+  { key:'sacks', icon:'💥', es:'Capturas', en:'Sacks', unit:'sacks' },
+  { key:'totalTackles', icon:'🛡️', es:'Tacleadas', en:'Tackles', unit:'tkl' },
+  { key:'interceptions', icon:'🙅', es:'Intercepciones', en:'Interceptions', unit:'INT' }
+];
+const WEEK_LEADERS_CACHE = new Map();
+async function fetchWeekLeaders(cat, week) {
+  const ck = cat.key + ':' + week;
+  const hit = WEEK_LEADERS_CACHE.get(ck);
+  if (hit && Date.now() - hit.ts < LEADERS_CACHE_TTL) return hit.rows;
+  const res = await fetch(LEADERS_API_ENDPOINT + '?stat=' + encodeURIComponent(cat.key) + '&limit=' + 5 + '&week=' + week, { cache: 'no-store' });
+  if (!res.ok) throw new Error('bad response');
+  let data = await res.json();
+  let rows;
+  if (data && Number(data.week) === week) {
+    rows = (data.leaders || []).map(p => ({ name: p.name, teamAbbr: p.team || '', position: p.position || '', value: p.total, opp: ((p.games || [])[0] || {}).opponent || '' }));
+  } else {
+    const res2 = await fetch(LEADERS_API_ENDPOINT + '?stat=' + encodeURIComponent(cat.key) + '&limit=50', { cache: 'no-store' });
+    if (!res2.ok) throw new Error('bad response');
+    data = await res2.json();
+    rows = (data.leaders || []).map(p => {
+      const g = (p.games || []).find(x => x.week === week);
+      return g ? { name: p.name, teamAbbr: g.team || p.team || '', position: p.position || '', value: g.value, opp: g.opponent || '' } : null;
+    }).filter(Boolean).sort((a, b) => b.value - a.value).slice(0, 5);
+  }
+  rows = rows.filter(r => Number(r.value) > 0);
+  WEEK_LEADERS_CACHE.set(ck, { ts: Date.now(), rows });
+  return rows;
+}
+function weekLeaderCardHtml(cat, rows, isEn) {
+  const top = rows.slice(0, 3).map((r, i) => {
+    const tk = leadersTeamKeyFromEspnAbbr(r.teamAbbr);
+    const team = tk ? TEAMS[tk] : null;
+    const logo = team ? teamLogo(tk) : ('https://a.espncdn.com/i/teamlogos/nfl/500/' + (r.teamAbbr || '').toLowerCase() + '.png');
+    const val = String(Math.round(Number(r.value) * 10) / 10);
+    return '<div class="wl-row' + (i === 0 ? ' wl-first' : '') + '"' + (tk ? ' data-team-profile="' + tk + '" role="button" tabindex="0"' : '') + '>' +
+      '<span class="wl-rank">' + (i + 1) + '</span><img src="' + logo + '" alt="" loading="lazy" decoding="async">' +
+      '<span class="wl-name"><b>' + escapeRoster(r.name) + '</b><small>' + escapeRoster((r.position ? r.position + ' · ' : '') + (r.teamAbbr || '') + (r.opp ? (isEn ? ' vs ' : ' vs ') + r.opp : '')) + '</small></span>' +
+      '<span class="wl-val">' + escapeRoster(val) + '<i>' + cat.unit + '</i></span></div>';
+  }).join('');
+  return '<div class="wl-card"><div class="wl-title">' + cat.icon + ' ' + (isEn ? cat.en : cat.es) + '</div>' + (top || '<div class="wl-empty">—</div>') + '</div>';
+}
+async function renderWeekLeaders(weekNum) {
+  const box = document.getElementById('week-leaders');
+  if (!box) return;
+  const isEn = LANG === 'en';
+  const started = GAMES.some(g => g.week === weekNum && new Date(g.iso).getTime() < Date.now());
+  if (!started) { box.innerHTML = ''; return; }
+  const heading = (isEn ? 'Week ' : 'Semana ') + weekNum;
+  box.innerHTML = '<details class="week-leaders" open><summary>🏆 ' + (isEn ? 'League leaders — ' : 'Líderes de la NFL — ') + heading + '<small>' + (isEn ? 'this week only' : 'solo esta semana') + '</small></summary><div class="wl-grid" id="wl-grid"><div class="wl-loading">' + (isEn ? 'Loading…' : 'Cargando…') + '</div></div><div class="wl-source">' + (isEn ? 'Source: nflverse · updates automatically' : 'Fuente: nflverse · se actualiza automáticamente') + '</div></details>';
+  try {
+    const results = await Promise.all(WEEK_LEADER_CATS.map(cat => fetchWeekLeaders(cat, weekNum).then(rows => ({ cat, rows })).catch(() => ({ cat, rows: null }))));
+    if (currentView !== 'week' || currentWeek !== weekNum) return;
+    const grid = document.getElementById('wl-grid');
+    if (!grid) return;
+    const ok = results.filter(r => r.rows && r.rows.length);
+    grid.innerHTML = ok.length ? ok.map(r => weekLeaderCardHtml(r.cat, r.rows, isEn)).join('') : '<div class="wl-loading">' + (isEn ? 'No stats yet for this week.' : 'Todavía no hay estadísticas para esta semana.') + '</div>';
+  } catch (e) { /* leave the loading/empty state */ }
+}
+
 function renderWeek(weekNum) {
   trackPageview('/semana-' + weekNum, 'Calendario · Semana ' + weekNum);
   stopLivePolling();
@@ -6771,6 +6857,7 @@ function renderWeek(weekNum) {
   document.getElementById('bye-line').innerHTML = byes.length
     ? '<div class="bye-chip">' + t('byesLabel') + '<b>' + byes.map(k => TEAMS[k].name).join(', ') + '</b></div>'
     : '';
+  renderWeekLeaders(weekNum);
 
   if (currentDivisionFilter) {
     weekGames = weekGames.filter(g => TEAMS[g.away].division === currentDivisionFilter || TEAMS[g.home].division === currentDivisionFilter);
@@ -6808,7 +6895,7 @@ function renderWeek(weekNum) {
 
 function renderTeamSchedule(teamKey) {
   stopLivePolling();
-  currentView = 'team';
+  currentView = 'team'; { const wl = document.getElementById('week-leaders'); if (wl) wl.innerHTML = ''; }
   currentTeam = teamKey;
   const team = TEAMS[teamKey];
   trackPageview('/equipo/' + teamKey, 'Equipo · ' + team.city + ' ' + team.name);
@@ -6957,7 +7044,7 @@ async function refreshLiveStandings() {
 
 function renderStandings() {
   stopLivePolling();
-  currentView = 'standings';
+  currentView = 'standings'; { const wl = document.getElementById('week-leaders'); if (wl) wl.innerHTML = ''; }
   currentTeam = "";
   document.getElementById('team-select').value = "";
   document.getElementById('weeks').querySelectorAll('.week-btn').forEach(b => b.classList.remove('active'));
@@ -10500,6 +10587,13 @@ const LIVE_EVENTS = new Map();
 // scoreboard poll knows to also refresh that modal's header + stats in place, exactly the way
 // updatePreseasonModalLive keeps the Pretemporada game-center modal fresh while it's open.
 let openLiveMatchId = null;
+// True while a player profile (opened over a game modal via openNflPlayerProfile) is what the modal
+// is showing. The 20s live polls used to see "the game modal's elements are gone" and rebuild the
+// game modal from scratch, which threw the visitor out of the player profile after a few seconds.
+function modalShowsPlayerProfile() {
+  const box = document.querySelector('.modal-box'), ov = document.getElementById('modal-overlay');
+  return !!(box && box.classList.contains('rpp-modal') && ov && ov.style.display !== 'none');
+}
 // The regular-season Calendario game the user currently has open in openGameCenter(), or null.
 // Unlike openLiveMatchId (only ever set for a game already confirmed live), this is set for EVERY
 // game center the user opens — live or not — so that if a game goes live while its modal is open
@@ -10805,6 +10899,7 @@ async function loadLiveMatchModalStats(event, isFinal) {
 // clock/situation mark in place (same trick as the live card) and re-fetches stats, without
 // touching which tab is currently active or resetting scroll position.
 function refreshLiveMatchModal(event, isFinal) {
+  if (modalShowsPlayerProfile()) return;
   const mark = document.getElementById('live-modal-center');
   if (mark) {
     mark.innerHTML = buildLiveMatchCenterMarkHtml(event, isFinal);
@@ -11088,7 +11183,7 @@ function openRulesPage() {
 
 function renderRules() {
   stopLivePolling();
-  currentView = 'rules';
+  currentView = 'rules'; { const wl = document.getElementById('week-leaders'); if (wl) wl.innerHTML = ''; }
   currentTeam = "";
   document.getElementById('team-select').value = "";
   document.getElementById('weeks').querySelectorAll('.week-btn').forEach(b => b.classList.remove('active'));
@@ -12074,7 +12169,7 @@ function openGameCenter(game) {
   // schedule feed and rebuild the modal as a FINAL (score + final player stats) instead of leaving it
   // looking like a game that was never played.
   if (!liveEntry && new Date(game.iso).getTime() < Date.now()) {
-    resolvePastCalendarGame(game).then(ok => { if (ok && openGameCenterModalGame === game) updateGameCenterLive(game); }).catch(() => {});
+    resolvePastCalendarGame(game).then(ok => { if (ok && openGameCenterModalGame === game && !modalShowsPlayerProfile()) updateGameCenterLive(game); }).catch(() => {});
   }
 }
 
@@ -12082,6 +12177,7 @@ function openGameCenter(game) {
 // updatePreseasonModalLive uses for the Pretemporada modal — called from refreshLiveEventsData()'s
 // global 20s poll, so this works regardless of which page the modal was opened from.
 function updateGameCenterLive(game) {
+  if (modalShowsPlayerProfile()) return;
   const awayAbbr = TEAM_ABBR[game.away], homeAbbr = TEAM_ABBR[game.home];
   const liveEntry = findLiveEventByAbbr(awayAbbr, homeAbbr);
   if (!liveEntry) return;
@@ -12307,7 +12403,7 @@ function openPreseasonGameCenter(game) {
     // rebuild it — openPreseasonGameCenter already renders the final score + stats panel correctly
     // once PRESEASON_LIVE has an entry for this matchup, so no separate rendering path is needed.
     resolvePastPreseasonGame(game).then(found => {
-      if (found && openPreseasonModalGame === game) openPreseasonGameCenter(game);
+      if (found && openPreseasonModalGame === game && !modalShowsPlayerProfile()) openPreseasonGameCenter(game);
     });
   }
 }
@@ -12333,6 +12429,7 @@ async function loadPreseasonLiveStats(eventId, isFinal, expectedAbbrs) {
 }
 
 function updatePreseasonModalLive(game) {
+  if (modalShowsPlayerProfile()) return;
   const awayAbbr = TEAM_ABBR[game.away], homeAbbr = TEAM_ABBR[game.home];
   const liveInfo = PRESEASON_LIVE.get(preseasonLiveKey(awayAbbr, homeAbbr));
   if (!liveInfo) return;
