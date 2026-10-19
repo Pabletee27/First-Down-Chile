@@ -1,4 +1,5 @@
-// Cloudflare Pages Function — GET /api/leaders?stat=<key>&limit=<n>&season=<year>
+// Cloudflare Pages Function — GET /api/leaders?stat=<key>&limit=<n>&season=<year>&week=<n (optional)>
+// With &week=N the ranking is that single week's leaders (the response also carries "week": N).
 //
 // Why this exists: First Down Chile's "Líderes de la NFL" page used to call ESPN's public
 // (unofficial, undocumented) stats API directly from the browser. This function moves that job
@@ -38,6 +39,7 @@ export async function onRequestGet(context) {
   const url = new URL(request.url);
   const statKey = url.searchParams.get('stat') || 'passingYards';
   const limit = Math.max(1, Math.min(Number(url.searchParams.get('limit')) || 10, 50));
+  const weekParam = Number(url.searchParams.get('week')) || 0;
   const season = (url.searchParams.get('season') || String(new Date().getUTCFullYear())).replace(/[^0-9]/g, '');
 
   const statConfig = STAT_MAP[statKey];
@@ -65,7 +67,7 @@ export async function onRequestGet(context) {
 
   let payload;
   try {
-    payload = buildLeaders(csvText, statConfig, limit, statKey, season);
+    payload = buildLeaders(csvText, statConfig, limit, statKey, season, weekParam);
   } catch (err) {
     return jsonResponse({ error: 'parse failed', detail: String(err && err.message || err) }, 500);
   }
@@ -82,7 +84,7 @@ function jsonResponse(obj, status, extraHeaders) {
   });
 }
 
-function buildLeaders(csvText, statConfig, limit, statKey, season) {
+function buildLeaders(csvText, statConfig, limit, statKey, season, weekFilter) {
   const rows = parseCSV(csvText);
   if (!rows.length) throw new Error('empty CSV');
   const header = rows[0];
@@ -103,6 +105,7 @@ function buildLeaders(csvText, statConfig, limit, statKey, season) {
     const row = rows[r];
     if (!row || row.length < header.length) continue;
     if (row[col.season_type] !== 'REG') continue;
+    if (weekFilter && Number(row[col.week]) !== weekFilter) continue;
 
     let value = 0;
     for (const c of statConfig.columns) value += Number(row[col[c]]) || 0;
@@ -131,7 +134,7 @@ function buildLeaders(csvText, statConfig, limit, statKey, season) {
     .slice(0, limit)
     .map(p => ({ ...p, total: round1(p.total), games: p.games.sort((a, b) => a.week - b.week) }));
 
-  return { stat: statKey, season, updated: new Date().toISOString(), leaders };
+  return { stat: statKey, season, week: weekFilter || null, updated: new Date().toISOString(), leaders };
 }
 
 function round1(n) {
