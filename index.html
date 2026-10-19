@@ -536,6 +536,12 @@
   .rpp-game-row .rpp-result { font-weight:900; }
   .rpp-game-row .rpp-result.win { color:#46bd7f; }
   .rpp-game-row .rpp-result.loss { color:#ef4444; }
+  .rpp-glog > summary { list-style:none; cursor:pointer; } .rpp-glog > summary::-webkit-details-marker { display:none; }
+  .rpp-glog > summary:after { content:'▾'; color:var(--text-tertiary); margin-left:8px; transition:transform .2s; } .rpp-glog[open] > summary:after { transform:rotate(180deg); }
+  .rpp-glog > summary.rpp-game-row { grid-template-columns:auto 1fr auto auto; }
+  .rpp-glog-group { margin-top:8px; } .rpp-glog-title { font-size:10px; font-weight:900; letter-spacing:.6px; text-transform:uppercase; color:var(--text-secondary); margin-bottom:6px; }
+  .rpp-glog .rpp-stat-grid { grid-template-columns:repeat(auto-fill,minmax(78px,1fr)); gap:6px; margin-bottom:0; }
+  .rpp-glog .rpp-stat-box { padding:7px 6px; } .rpp-glog .rpp-stat-box b { font-size:15px; }
   .rpp-game-row-full { border:1px solid var(--card-border); border-radius:10px; padding:8px 12px 10px; }
   .rpp-game-row-full .rpp-game-row { border:none; padding:0 0 8px; }
   .rpp-game-row-full .rpp-stat-grid { margin-bottom:0; }
@@ -1380,6 +1386,27 @@
   .weather-text { display:flex; flex-direction:column; gap:2px; min-width:0; }
   .weather-text b { color:#fff; font-size:13px; }
   .weather-text span { color:#9aa4b4; font-size:11px; }
+  .vfield-wrap { margin-bottom:12px; padding:11px; border-radius:13px; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.09); }
+  .vfield-head { display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; margin-bottom:8px; font-size:11px; color:var(--text-secondary); font-weight:700; }
+  .vfield-head img { vertical-align:middle; object-fit:contain; } .vfield-head b { color:var(--text-primary); }
+  .vfield { display:block; width:100%; height:auto; }
+  .vfield-legend { display:flex; flex-wrap:wrap; gap:12px; margin-top:8px; font-size:10px; color:var(--text-tertiary); font-weight:700; }
+  .vfield-legend i { display:inline-block; vertical-align:middle; margin-right:4px; } .lg-ball { width:12px; height:7px; border-radius:50%; background:#8a4b1f; border:1px solid #fff; }
+  .lg-fd { width:3px; height:11px; background:#ffd23f; } .lg-path { width:14px; height:0; border-top:3px dotted #cfd8e3; } .lg-dir { margin-left:auto; }
+  .drive-item { border-radius:11px; } .drive-item > summary { list-style:none; cursor:pointer; } .drive-item > summary::-webkit-details-marker { display:none; }
+  .drive-item > summary .drive-row:after { content:''; }
+  .drive-item[open] > summary .drive-row { border-bottom-left-radius:0; border-bottom-right-radius:0; }
+  .drive-live { border-color:rgba(239,68,68,.55) !important; box-shadow:0 0 0 1px rgba(239,68,68,.25); }
+  .drive-live-tag { background:rgba(239,68,68,.18); color:#ff8a8a; }
+  .drive-detail { padding:10px; border:1px solid rgba(255,255,255,.07); border-top:0; border-radius:0 0 11px 11px; background:rgba(255,255,255,.02); }
+  .play-list { display:flex; flex-direction:column; gap:5px; margin-top:9px; }
+  .play-row { display:grid; grid-template-columns:96px 1fr auto; gap:9px; align-items:start; padding:7px 9px; border-radius:8px; background:rgba(255,255,255,.03); font-size:11.5px; line-height:1.4; }
+  .play-meta { display:flex; flex-direction:column; gap:1px; } .play-meta b { font-size:11px; color:var(--text-primary); } .play-meta span { font-size:10px; color:var(--text-tertiary); font-weight:700; }
+  .play-text { color:var(--text-secondary); min-width:0; overflow-wrap:anywhere; } .play-text i { font-style:normal; font-weight:900; color:var(--text-primary); }
+  .play-clock { font-size:10px; color:var(--text-tertiary); font-weight:800; white-space:nowrap; }
+  .play-score { background:rgba(70,189,127,.14); } .play-bad { background:rgba(239,68,68,.12); }
+  @media(max-width:600px) { .play-row { grid-template-columns:78px 1fr; } .play-clock { grid-column:2; } }
+  .live-analysis-panel { grid-column:1/-1; } .live-analysis-panel .game-preview-block { margin-top:0; padding-top:0; border-top:0; }
   .drives-list { display:flex; flex-direction:column; gap:8px; }
   .drive-row { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:10px; padding:9px 11px; border-radius:11px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); }
   .drive-team { display:flex; flex-direction:column; align-items:center; gap:3px; }
@@ -6362,6 +6389,23 @@ function gamePreviewArticleHtml(g) {
     '<p class="game-preview-lead"><b>' + escapeCareer(copy.lead) + '</b></p>' +
     copy.paragraphs.map(p => '<p>' + escapeCareer(p) + '</p>').join('') + '</div>';
 }
+// Same FDC analysis as the Game Center "Resumen", but for the Live Center modal: shown even once
+// the game has started or ended (gamePreviewHtml hides it after a final), since the pre-game read
+// is exactly what people want to compare against what is happening on the field.
+function liveAnalysisHtml(awayAbbr, homeAbbr) {
+  const awayKey = ABBR_TEAM[awayAbbr], homeKey = ABBR_TEAM[homeAbbr];
+  if (!awayKey || !homeKey) return '';
+  const g = { away: awayKey, home: homeKey };
+  const article = gamePreviewArticleHtml(g);
+  if (article) return article;
+  const preview = GAME_PREVIEW[awayKey + '|' + homeKey];
+  if (preview) {
+    const paragraphs = LANG === 'en' ? preview.en : preview.es;
+    return '<div class="game-preview-block"><div class="game-preview-label">' + (LANG === 'en' ? '📋 FDC ANALYSIS' : '📋 ANÁLISIS FDC') + '</div>' + paragraphs.map(p => '<p>' + escapeCareer(p) + '</p>').join('') + '</div>';
+  }
+  const lean = GAME_LEAN[awayKey + '|' + homeKey];
+  return lean ? '<div class="game-preview-block"><div class="game-preview-label">' + (LANG === 'en' ? '📋 FDC ANALYSIS' : '📋 ANÁLISIS FDC') + '</div><p>' + escapeCareer(LANG === 'en' ? lean.en : lean.es) + '</p></div>' : '';
+}
 function gamePreviewHtml(g) {
   if (gameFinalWinner(g)) return '';
   const longArticle = gamePreviewArticleHtml(g);
@@ -9650,6 +9694,88 @@ function buildWeatherHtml(summary) {
 // goal, turnover…), newest first, capped to the most recent 14 so the tab stays scannable in a
 // long game. Falls back to an empty string (caller shows the same "no data yet" message used by
 // the live player-stats tab) when ESPN hasn't sent drive data for this game at all.
+// ---------- Virtual field + drive-by-drive detail ----------
+// Convention: the AWAY team's end zone is on the left and the HOME team's on the right, so a away
+// offense always drives left→right and a home offense right→left. (Real teams switch ends each
+// quarter; a fixed orientation keeps the diagram readable.) ESPN gives "yardsToEndzone" from the
+// offense's point of view, which is converted to a 0–100 position measured from the left goal line.
+const openDriveIds = new Set(), closedDriveIds = new Set();
+document.addEventListener('toggle', ev => {
+  const d = ev.target;
+  if (!d || !d.classList || !d.classList.contains('drive-item') || !d.dataset.driveId) return;
+  if (d.open) { openDriveIds.add(d.dataset.driveId); closedDriveIds.delete(d.dataset.driveId); }
+  else { openDriveIds.delete(d.dataset.driveId); closedDriveIds.add(d.dataset.driveId); }
+}, true);
+
+function fieldPosFromLeft(offAbbr, awayAbbr, yardsToEndzone) {
+  const y = Number(yardsToEndzone);
+  if (!isFinite(y)) return null;
+  return offAbbr === awayAbbr ? 100 - y : y;
+}
+// Draws the field. opts: { ball:{pos,abbr}, firstDown:pos|null, path:{from,to,abbr,points:[pos…]}, abbrs:[away,home] }
+function virtualFieldHtml(awayAbbr, homeAbbr, opts) {
+  opts = opts || {};
+  const X0 = 26, W = 348, H = 104;
+  const xOf = p => X0 + Math.max(0, Math.min(100, p)) * (W / 100);
+  const awayKey = ABBR_TEAM[awayAbbr], homeKey = ABBR_TEAM[homeAbbr];
+  const awayC = (awayKey && TEAMS[awayKey] && TEAMS[awayKey].c1) || '#8b1a2b';
+  const homeC = (homeKey && TEAMS[homeKey] && TEAMS[homeKey].c1) || '#1a2a5c';
+  const colorOf = abbr => abbr === awayAbbr ? awayC : homeC;
+  let svg = '<svg class="vfield" viewBox="0 0 400 ' + H + '" role="img" aria-label="' + (LANG === 'en' ? 'Virtual field' : 'Cancha virtual') + '" preserveAspectRatio="xMidYMid meet">' +
+    '<rect x="0" y="0" width="400" height="' + H + '" rx="8" fill="#2c6a3e"/>' +
+    '<rect x="0" y="0" width="' + X0 + '" height="' + H + '" rx="8" fill="' + awayC + '" opacity=".9"/><rect x="' + (X0 + W) + '" y="0" width="' + (400 - X0 - W) + '" height="' + H + '" rx="8" fill="' + homeC + '" opacity=".9"/>' +
+    '<text x="' + (X0 / 2) + '" y="' + (H / 2) + '" fill="#fff" font-size="9" font-weight="900" text-anchor="middle" dominant-baseline="middle" transform="rotate(-90 ' + (X0 / 2) + ' ' + (H / 2) + ')">' + escapeRoster(awayAbbr) + '</text>' +
+    '<text x="' + (X0 + W + (400 - X0 - W) / 2) + '" y="' + (H / 2) + '" fill="#fff" font-size="9" font-weight="900" text-anchor="middle" dominant-baseline="middle" transform="rotate(90 ' + (X0 + W + (400 - X0 - W) / 2) + ' ' + (H / 2) + ')">' + escapeRoster(homeAbbr) + '</text>';
+  for (let i = 0; i <= 20; i++) {
+    const x = xOf(i * 5), major = i % 2 === 0;
+    svg += '<line x1="' + x + '" y1="8" x2="' + x + '" y2="' + (H - 8) + '" stroke="rgba(255,255,255,' + (major ? '.42' : '.16') + ')" stroke-width="' + (major ? '1.2' : '.7') + '"/>';
+    if (major && i > 0 && i < 20) { const n = i <= 10 ? i * 5 : (20 - i) * 5; svg += '<text x="' + x + '" y="' + (H - 14) + '" fill="rgba(255,255,255,.55)" font-size="8" font-weight="800" text-anchor="middle">' + n + '</text>'; }
+  }
+  if (opts.path && opts.path.from != null && opts.path.to != null) {
+    const p = opts.path, c = colorOf(p.abbr), pts = (p.points && p.points.length ? p.points : [p.from, p.to]);
+    svg += '<polyline points="' + pts.map(v => xOf(v) + ',' + (H / 2)).join(' ') + '" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity=".28"/>' +
+      '<polyline points="' + pts.map(v => xOf(v) + ',' + (H / 2)).join(' ') + '" fill="none" stroke="' + c + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 5"/>';
+    pts.forEach(v => { svg += '<circle cx="' + xOf(v) + '" cy="' + (H / 2) + '" r="2.6" fill="#fff"/>'; });
+    svg += '<circle cx="' + xOf(p.from) + '" cy="' + (H / 2) + '" r="5" fill="' + c + '" stroke="#fff" stroke-width="1.6"/>';
+  }
+  if (opts.firstDown != null) svg += '<line x1="' + xOf(opts.firstDown) + '" y1="6" x2="' + xOf(opts.firstDown) + '" y2="' + (H - 6) + '" stroke="#ffd23f" stroke-width="2.4"/>';
+  const b = opts.ball || (opts.path && opts.path.to != null ? { pos: opts.path.to, abbr: opts.path.abbr } : null);
+  if (b && b.pos != null) {
+    const bx = xOf(b.pos);
+    svg += '<ellipse cx="' + bx + '" cy="' + (H / 2) + '" rx="9" ry="5.6" fill="#8a4b1f" stroke="#fff" stroke-width="1.6"/><line x1="' + (bx - 4) + '" y1="' + (H / 2) + '" x2="' + (bx + 4) + '" y2="' + (H / 2) + '" stroke="#fff" stroke-width="1.2"/>';
+  }
+  return svg + '</svg>';
+}
+
+function drivePlayList(drive) { return Array.isArray(drive && drive.plays) ? drive.plays : []; }
+function drivePathPoints(drive, awayAbbr) {
+  const off = drive.team && drive.team.abbreviation;
+  const pts = [];
+  const first = drivePlayList(drive)[0];
+  const startY = first && first.start && first.start.yardsToEndzone != null ? first.start.yardsToEndzone : (drive.start && drive.start.yardsToEndzone);
+  const sp = fieldPosFromLeft(off, awayAbbr, startY);
+  if (sp != null) pts.push(sp);
+  drivePlayList(drive).forEach(p => {
+    const e = p.end && p.end.yardsToEndzone != null ? p.end.yardsToEndzone : null;
+    const pos = e != null ? fieldPosFromLeft(off, awayAbbr, e) : null;
+    if (pos != null && (!pts.length || pts[pts.length - 1] !== pos)) pts.push(pos);
+  });
+  return pts;
+}
+function playRowHtml(play, isEn) {
+  const st = play.start || {};
+  const dd = st.shortDownDistanceText || st.downDistanceText || '';
+  const where = st.possessionText || '';
+  const type = ((play.type && play.type.text) || '').toLowerCase();
+  const cls = play.scoringPlay ? 'play-score' : (/interception|fumble|turnover|sack|safety/.test(type) ? 'play-bad' : '');
+  const per = play.period && play.period.number ? 'Q' + play.period.number : '';
+  const clock = (play.clock && play.clock.displayValue) || '';
+  const yd = play.statYardage != null ? ' <i>' + (play.statYardage > 0 ? '+' : '') + play.statYardage + (isEn ? ' yd' : ' yd') + '</i>' : '';
+  return '<div class="play-row ' + cls + '"><div class="play-meta"><b>' + escapeRoster(dd || (type ? play.type.text : '')) + '</b>' + (where ? '<span>' + escapeRoster(where) + '</span>' : '') + '</div>' +
+    '<div class="play-text">' + escapeRoster(play.text || play.shortText || '') + yd + '</div>' +
+    '<div class="play-clock">' + escapeRoster((per + ' ' + clock).trim()) + '</div></div>';
+}
+
 function buildDrivesHtml(summary, awayAbbr, homeAbbr) {
   const drivesObj = summary && summary.drives;
   if (!drivesObj) return '';
@@ -9658,7 +9784,8 @@ function buildDrivesHtml(summary, awayAbbr, homeAbbr) {
   if (drivesObj.current) list.push(drivesObj.current);
   if (!list.length) return '';
   const isEn = LANG === 'en';
-  const ordered = list.slice(-14).reverse();
+  const currentId = drivesObj.current ? String(drivesObj.current.id) : '';
+  const ordered = list.slice().reverse();
   const resultClass = text => {
     const t = (text || '').toLowerCase();
     if (t.indexOf('touchdown') !== -1) return 'drive-td';
@@ -9668,7 +9795,30 @@ function buildDrivesHtml(summary, awayAbbr, homeAbbr) {
     if (t.indexOf('punt') !== -1) return 'drive-punt';
     return 'drive-other';
   };
+  // Top block: the field with the ball where the last recorded play ended (the live spot while a drive is in progress).
+  let liveField = '';
+  const lastDrive = list[list.length - 1];
+  const lastPlays = drivePlayList(lastDrive);
+  const lastPlay = lastPlays[lastPlays.length - 1];
+  if (lastPlay) {
+    const off = lastDrive.team && lastDrive.team.abbreviation;
+    const endRef = (lastPlay.end && lastPlay.end.yardsToEndzone != null) ? lastPlay.end : lastPlay.start;
+    const ballPos = endRef ? fieldPosFromLeft(off, awayAbbr, endRef.yardsToEndzone) : null;
+    let fd = null;
+    const dist = Number(endRef && endRef.distance), dn = Number(endRef && endRef.down);
+    if (ballPos != null && drivesObj.current && dn >= 1 && isFinite(dist)) fd = off === awayAbbr ? ballPos + dist : ballPos - dist;
+    if (ballPos != null) {
+      const offKey = ABBR_TEAM[off];
+      const situation = (endRef && (endRef.downDistanceText || endRef.shortDownDistanceText)) || '';
+      const spot = (endRef && endRef.possessionText) || '';
+      liveField = '<div class="vfield-wrap"><div class="vfield-head"><span>' + (offKey ? '<img src="' + teamLogo(offKey) + '" alt="" width="16" height="16"> ' : '') + (drivesObj.current ? (isEn ? 'In possession: ' : 'Con la posesión: ') : (isEn ? 'Last play: ' : 'Última jugada: ')) + '<b>' + escapeRoster(off || '') + '</b></span><span>' + escapeRoster([situation, spot].filter(Boolean).join(' · ')) + '</span></div>' +
+        virtualFieldHtml(awayAbbr, homeAbbr, { ball: { pos: ballPos, abbr: off }, firstDown: fd, path: { from: drivePathPoints(lastDrive, awayAbbr)[0], to: ballPos, abbr: off, points: drivePathPoints(lastDrive, awayAbbr) } }) +
+        '<div class="vfield-legend"><span><i class="lg-ball"></i>' + (isEn ? 'Ball' : 'Balón') + '</span><span><i class="lg-fd"></i>' + (isEn ? 'First-down line' : 'Línea de primer down') + '</span><span><i class="lg-path"></i>' + (isEn ? 'Drive progress' : 'Avance del drive') + '</span><span class="lg-dir">' + escapeRoster(awayAbbr) + ' → ' + escapeRoster(homeAbbr) + '</span></div></div>';
+    }
+  }
   const rows = ordered.map(drive => {
+    const id = String(drive.id);
+    const isCurrent = id === currentId;
     const teamAbbr = (drive.team && drive.team.abbreviation) || '';
     const teamKey = ABBR_TEAM[teamAbbr];
     const resultText = drive.displayResult || drive.result || drive.shortDisplayResult || '';
@@ -9678,13 +9828,20 @@ function buildDrivesHtml(summary, awayAbbr, homeAbbr) {
       (drive.timeElapsed && drive.timeElapsed.displayValue) || ''
     ].filter(Boolean).join(', ');
     const startText = drive.start && drive.start.text ? drive.start.text : '';
-    return '<div class="drive-row">' +
+    const per = drive.start && drive.start.period && drive.start.period.number ? 'Q' + drive.start.period.number + ' ' + ((drive.start.clock && drive.start.clock.displayValue) || '') : '';
+    const plays = drivePlayList(drive);
+    const pts = drivePathPoints(drive, awayAbbr);
+    const summaryRow = '<div class="drive-row' + (isCurrent ? ' drive-live' : '') + '">' +
       '<div class="drive-team">' + (teamKey ? '<img src="' + teamLogo(teamKey) + '" alt="" loading="lazy" decoding="async">' : '') + '<b>' + escapeRoster(teamAbbr) + '</b></div>' +
-      '<div class="drive-text">' + (startText ? '<span class="drive-start">' + (isEn ? 'From ' : 'Desde ') + escapeRoster(startText) + '</span>' : '') + '<span class="drive-desc">' + escapeRoster(desc) + '</span></div>' +
-      '<div class="drive-result ' + resultClass(resultText) + '">' + escapeRoster(resultText || (isEn ? 'In progress' : 'En curso')) + '</div>' +
-    '</div>';
+      '<div class="drive-text">' + (startText ? '<span class="drive-start">' + (per ? escapeRoster(per.trim()) + ' · ' : '') + (isEn ? 'From ' : 'Desde ') + escapeRoster(startText) + '</span>' : '') + '<span class="drive-desc">' + escapeRoster(desc) + '</span></div>' +
+      '<div class="drive-result ' + (isCurrent && !resultText ? 'drive-live-tag' : resultClass(resultText)) + '">' + escapeRoster(resultText || (isEn ? 'In progress' : 'En curso')) + '</div></div>';
+    if (!plays.length) return '<div class="drive-item-plain">' + summaryRow + '</div>';
+    const open = openDriveIds.has(id) || (isCurrent && !closedDriveIds.has(id));
+    const field = pts.length > 1 ? virtualFieldHtml(awayAbbr, homeAbbr, { path: { from: pts[0], to: pts[pts.length - 1], abbr: teamAbbr, points: pts } }) : '';
+    return '<details class="drive-item" data-drive-id="' + escapeRoster(id) + '"' + (open ? ' open' : '') + '><summary>' + summaryRow + '</summary>' +
+      '<div class="drive-detail">' + field + '<div class="play-list">' + plays.map(p => playRowHtml(p, isEn)).join('') + '</div></div></details>';
   }).join('');
-  return rows;
+  return liveField + rows;
 }
 
 // Spanish short labels for ESPN's box-score column codes (English keeps ESPN's own codes).
@@ -10022,20 +10179,68 @@ function gameResultClass(result) {
   return '';
 }
 
+// Friendly labels (ES/EN) for ESPN's per-game stat keys, grouped so the expanded game shows
+// "Recepción / Carrera / Pase / Defensa..." instead of a flat run of repeated YDS/TD codes.
+const GAMELOG_STAT_MAP = {
+  completions:['Pase','Passing','CMP','CMP'], passingAttempts:['Pase','Passing','ATT','ATT'], passingYards:['Pase','Passing','YDS','YDS'],
+  completionPct:['Pase','Passing','CMP%','CMP%'], yardsPerPassAttempt:['Pase','Passing','Y/INT','Y/A'], passingTouchdowns:['Pase','Passing','TD','TD'],
+  interceptions:['Pase','Passing','INT','INT'], longPassing:['Pase','Passing','LARGO','LNG'], sacks:['Pase','Passing','SACK','SACK'], sacksTaken:['Pase','Passing','SACK','SACK'],
+  QBRating:['Pase','Passing','QBR','QBR'], passerRating:['Pase','Passing','RATING','RTG'], adjQBR:['Pase','Passing','QBR aj.','ADJ QBR'],
+  rushingAttempts:['Carrera','Rushing','ACA','CAR'], rushingYards:['Carrera','Rushing','YDS','YDS'], yardsPerRushAttempt:['Carrera','Rushing','PROM','AVG'],
+  longRushing:['Carrera','Rushing','LARGO','LNG'], rushingTouchdowns:['Carrera','Rushing','TD','TD'],
+  receptions:['Recepción','Receiving','REC','REC'], receivingTargets:['Recepción','Receiving','OBJETIVOS','TGTS'], receivingYards:['Recepción','Receiving','YDS','YDS'],
+  yardsPerReception:['Recepción','Receiving','PROM','AVG'], receivingTouchdowns:['Recepción','Receiving','TD','TD'], longReception:['Recepción','Receiving','LARGO','LNG'],
+  fumbles:['Balón suelto','Fumbles','FUM','FUM'], fumblesLost:['Balón suelto','Fumbles','PERD','LOST'], fumblesForced:['Defensa','Defense','FF','FF'], kicksBlocked:['Defensa','Defense','BLOQ','BLK'],
+  totalTackles:['Defensa','Defense','TACK','TOT'], soloTackles:['Defensa','Defense','SOLO','SOLO'], assistTackles:['Defensa','Defense','AST','AST'],
+  sacks_:['Defensa','Defense','SACK','SACK'], tacklesForLoss:['Defensa','Defense','TFL','TFL'], passesDefended:['Defensa','Defense','PD','PD'], QBHits:['Defensa','Defense','GOLPES QB','QB HTS'],
+  defensiveInterceptions:['Defensa','Defense','INT','INT'], interceptionYards:['Defensa','Defense','INT YDS','INT YDS'], defensiveTouchdowns:['Defensa','Defense','TD','TD'],
+  fieldGoalsMade:['Pateador','Kicking','FG','FGM'], fieldGoalAttempts:['Pateador','Kicking','FG INT','FGA'], longFieldGoalMade:['Pateador','Kicking','FG LARGO','LNG'],
+  extraPointsMade:['Pateador','Kicking','XP','XPM'], extraPointAttempts:['Pateador','Kicking','XP INT','XPA'], totalKickingPoints:['Pateador','Kicking','PTS','PTS'],
+  puntAttempts:['Despeje','Punting','PUNTS','PUNTS'], puntYards:['Despeje','Punting','YDS','YDS'], grossAvgPuntYards:['Despeje','Punting','PROM','AVG'], longPunt:['Despeje','Punting','LARGO','LNG'],
+  kickReturns:['Retornos','Returns','KR','KR'], kickReturnYards:['Retornos','Returns','KR YDS','KR YDS'], puntReturns:['Retornos','Returns','PR','PR'], puntReturnYards:['Retornos','Returns','PR YDS','PR YDS']
+};
+function gamelogStatEntries(data, eventId) {
+  const names = data.names || [], labels = data.labels || [];
+  let stats = null;
+  (data.seasonTypes || []).forEach(st => (st.categories || []).forEach(cat => (cat.events || []).forEach(e => {
+    if (!stats && String(e.eventId) === String(eventId) && Array.isArray(e.stats)) stats = e.stats;
+  })));
+  if (!stats) return [];
+  const isEn = LANG === 'en';
+  const groups = [];
+  const seen = {};
+  names.forEach((nm, i) => {
+    const v = stats[i];
+    if (v === undefined || v === null || v === '' || v === '-' || v === '--') return;
+    const m = GAMELOG_STAT_MAP[nm];
+    const group = m ? (isEn ? m[1] : m[0]) : (isEn ? 'Other' : 'Otros');
+    const label = m ? (isEn ? m[3] : m[2]) : (labels[i] || nm);
+    if (!seen[group]) { seen[group] = { group, items: [] }; groups.push(seen[group]); }
+    seen[group].items.push({ label, value: v });
+  });
+  // Hide groups with nothing but zeros (e.g. a receiver's empty rushing line) so the panel stays readable.
+  return groups.filter(g => g.items.some(it => Number(String(it.value).replace(/[^0-9.\-]/g, '')) !== 0 || /\//.test(String(it.value))));
+}
 function gamelogRowsHtml(gamelogData) {
   const labels = playerLabels();
   const events = gamelogData && gamelogData.events;
   if (!events || typeof events !== 'object') return '';
-  const rows = Object.values(events)
-    .filter(ev => ev && ev.gameDate)
-    .sort((a, b) => new Date(b.gameDate) - new Date(a.gameDate))
-    .map(ev => {
+  const isEn = LANG === 'en';
+  const rows = Object.entries(events)
+    .filter(([id, ev]) => ev && ev.gameDate)
+    .sort((a, b) => new Date(b[1].gameDate) - new Date(a[1].gameDate))
+    .map(([id, ev]) => {
       const opp = ev.opponent ? (ev.opponent.abbreviation || ev.opponent.displayName || '') : '';
       const atVs = ev.atVs === '@' ? labels.at : labels.vs;
       const resultLetter = ev.gameResult === 'W' ? labels.win : (ev.gameResult === 'L' ? labels.loss : labels.tie);
       const score = ev.score || '';
       const dateTxt = new Intl.DateTimeFormat(LANG === 'en' ? 'en-US' : 'es-CL', { timeZone: 'America/Santiago', day: 'numeric', month: 'short' }).format(new Date(ev.gameDate));
-      return '<div class="rpp-game-row"><span class="rpp-date">' + dateTxt + '</span><span>' + atVs + ' ' + opp + '</span><span class="rpp-result ' + gameResultClass(ev.gameResult) + '">' + resultLetter + ' ' + score + '</span></div>';
+      const groups = gamelogStatEntries(gamelogData, ev.id || id);
+      const head = '<span class="rpp-date">' + dateTxt + '</span><span>' + (ev.week ? (isEn ? 'Wk ' : 'Sem ') + escapeRoster(String(ev.week)) + ' · ' : '') + atVs + ' ' + escapeRoster(opp) + '</span><span class="rpp-result ' + gameResultClass(ev.gameResult) + '">' + resultLetter + ' ' + escapeRoster(score) + '</span>';
+      if (!groups.length) return '<div class="rpp-game-row">' + head + '</div>';
+      const body = groups.map(g => '<div class="rpp-glog-group"><div class="rpp-glog-title">' + escapeRoster(g.group) + '</div><div class="rpp-stat-grid">' +
+        g.items.map(it => '<div class="rpp-stat-box"><b>' + escapeRoster(String(it.value)) + '</b><span>' + escapeRoster(String(it.label)) + '</span></div>').join('') + '</div></div>').join('');
+      return '<details class="rpp-game-row-full rpp-glog"><summary class="rpp-game-row">' + head + '</summary>' + body + '</details>';
     });
   return rows.length ? '<div class="rpp-game-list">' + rows.join('') + '</div>' : '';
 }
@@ -10514,6 +10719,7 @@ function renderLiveMatchModal(event, isFinal) {
     '</nav>' +
     '<div class="match-content">' +
       '<section class="match-tab-panel active" data-match-panel="summary"><div class="match-grid">' +
+        (liveAnalysisHtml(away.team.abbreviation, home.team.abbreviation) ? '<section class="match-panel live-analysis-panel">' + liveAnalysisHtml(away.team.abbreviation, home.team.abbreviation) + '</section>' : '') +
         '<section class="match-panel"><div class="match-panel-title">' + (isEn ? 'Right now' : 'En este momento') + '</div><p>' + (isEn ? 'Follow the score and the current play above. Open the "Live stats" tab for the full player-by-player breakdown for both teams.' : 'Sigue el marcador y la jugada en curso arriba. Abre la pestaña "Estadísticas en vivo" para ver el desglose completo por jugador de ambos equipos.') + '</p></section>' +
         '<section class="match-panel" id="live-modal-weather-' + event.id + '"></section>' +
         '<section class="match-panel" id="live-modal-teamstats-' + event.id + '"></section>' +
