@@ -530,6 +530,21 @@
   .rpp-stat-box span { display:block; margin-top:2px; font-size:9px; color:var(--text-tertiary); font-weight:800; text-transform:uppercase; }
   .rpp-stat-box small { display:block; margin-top:3px; font-size:9.5px; color:#75dfa6; font-weight:800; }
   .rpp-empty { padding:14px; border:1px dashed var(--card-border); border-radius:12px; color:var(--text-tertiary); font-size:12px; text-align:center; }
+  .cmp-heads { display:grid; grid-template-columns:1fr auto 1fr; gap:8px; align-items:center; margin:12px 0; }
+  .cmp-head { display:flex; flex-direction:column; align-items:center; gap:3px; text-align:center; padding:10px 6px; border:1px solid var(--card-border); border-radius:12px; background:var(--pill-bg); min-width:0; }
+  .cmp-head b { font-size:13px; font-weight:900; overflow-wrap:anywhere; }
+  .cmp-head small { font-size:10.5px; color:var(--text-secondary); }
+  .cmp-head-empty { font-size:26px; font-weight:900; color:var(--text-secondary); min-height:70px; justify-content:center; }
+  .cmp-vs { font-weight:950; font-size:12px; color:var(--text-secondary); }
+  .cmp-search { width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid var(--card-border); border-radius:10px; background:var(--pill-bg); color:var(--text-primary); font-size:14px; margin-bottom:6px; }
+  .cmp-results { display:flex; flex-direction:column; gap:4px; margin-bottom:8px; }
+  .cmp-tabs { margin-top:10px; flex-wrap:wrap; }
+  .cmp-cat { margin-top:12px; border:1px solid var(--card-border); border-radius:12px; overflow:hidden; }
+  .cmp-cat-title { padding:7px 12px; font-size:11px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; background:var(--pill-bg); color:var(--text-secondary); }
+  .cmp-row { display:grid; grid-template-columns:1fr 1.3fr 1fr; align-items:center; text-align:center; padding:7px 8px; border-top:1px solid var(--card-border); font-size:13px; }
+  .cmp-l { font-size:10.5px; color:var(--text-secondary); font-weight:800; text-transform:uppercase; }
+  .cmp-v { font-weight:800; padding:2px 6px; border-radius:8px; justify-self:center; }
+  .cmp-win { background:rgba(34,160,90,.18); color:#1c8a4d; font-weight:950; }
   .rpp-gamelog-btn { display:inline-flex; align-items:center; gap:6px; margin-top:2px; padding:8px 14px; border:1px solid var(--card-border); border-radius:10px; background:var(--pill-bg); color:var(--text-primary); font-size:11.5px; font-weight:850; cursor:pointer; }
   .rpp-game-list { display:flex; flex-direction:column; gap:6px; margin-top:10px; }
   .rpp-game-row { display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; padding:8px 12px; border:1px solid var(--card-border); border-radius:10px; font-size:11.5px; }
@@ -10444,6 +10459,7 @@ function playerModalSkeletonHtml(name, position, jersey) {
   return '<div class="rpp-hero"><div class="rpp-hero-top"><div><div class="rpp-hero-name">' + (jersey ? '<span class="rpp-hero-jersey">#' + escapeRoster(String(jersey)) + '</span>' : '') + name + '</div>' +
     (position ? '<div class="rpp-hero-meta">' + position + '</div>' : '') + '</div></div></div>' +
     '<div class="rpp-body">' +
+      '<button type="button" class="rpp-gamelog-btn rpp-compare-btn" data-compare-open>⚖ ' + (LANG === 'en' ? 'Compare with another player' : 'Comparar con otro jugador') + '</button>' +
       '<div class="rpp-section-title">' + labels.pastSeason + '</div>' +
       '<p class="rpp-hero-meta" style="margin-bottom:10px">' + labels.pastSeasonNote + '</p>' +
       '<div id="player-past-season">' + '<div class="rpp-empty">' + labels.loading + '</div>' + '</div>' +
@@ -10590,6 +10606,138 @@ let openLiveMatchId = null;
 // True while a player profile (opened over a game modal via openNflPlayerProfile) is what the modal
 // is showing. The 20s live polls used to see "the game modal's elements are gone" and rebuild the
 // game modal from scratch, which threw the visitor out of the player profile after a few seconds.
+// ---- Compare two players side by side ----
+let compareState = null; // { a:{id,name,teamKey,jersey}, b:{...}|null, season:'2025-2'|'2026-2'|'2026-1' }
+function compareLabels() {
+  return LANG === 'en'
+    ? { title:'Compare players', search:'Search a player to compare…', back:'← Back to profile', pick:'Type at least 2 letters to search any NFL player.', none:'No players found.', noData:'No stats for this season.', s25:'2025 season', s26:'2026 regular', s26p:'2026 preseason', loading:'Loading stats…', err:'Could not load stats.', swap:'Change player' }
+    : { title:'Comparar jugadores', search:'Busca un jugador para comparar…', back:'← Volver a la ficha', pick:'Escribe al menos 2 letras para buscar cualquier jugador NFL.', none:'No se encontraron jugadores.', noData:'Sin estadísticas en esta temporada.', s25:'Temporada 2025', s26:'2026 regular', s26p:'2026 pretemporada', loading:'Cargando estadísticas…', err:'No se pudieron cargar las estadísticas.', swap:'Cambiar jugador' };
+}
+function compareHeaderHtml(p, side) {
+  const t = p && p.teamKey && TEAMS[p.teamKey];
+  if (!p) return '<div class="cmp-head cmp-head-empty">?</div>';
+  return '<div class="cmp-head">' + (t ? '<img src="' + teamLogo(p.teamKey) + '" alt="" width="34" height="34">' : '') +
+    '<b>' + (p.jersey ? '#' + escapeRoster(String(p.jersey)) + ' ' : '') + escapeRoster(p.name) + '</b>' +
+    (t ? '<small>' + t.city + ' ' + t.name + '</small>' : '') + '</div>';
+}
+function compareCats(data, year) {
+  const out = {};
+  if (!data || !Array.isArray(data.categories)) return out;
+  data.categories.forEach(cat => {
+    const row = (cat.statistics || []).find(r => r.season && r.season.year === year);
+    if (!row) return;
+    const labels = cat.labels || [];
+    const gp = Number(row.stats[labels.indexOf('GP')]) || 0;
+    if (!gp) return;
+    out[cat.name] = { name: cat.name, display: cat.displayName || cat.name, labels, names: cat.displayNames || labels, stats: row.stats, gp };
+  });
+  return out;
+}
+function compareNum(v) { const n = parseFloat(String(v).replace(/,/g, '')); return isNaN(n) ? null : n; }
+function compareTableHtml(da, db, year, pa, pb) {
+  const L = compareLabels();
+  const ca = compareCats(da, year), cb = compareCats(db, year);
+  const names = Object.keys(ca).concat(Object.keys(cb).filter(k => !(k in ca)));
+  if (!names.length) return '<div class="rpp-empty">' + L.noData + '</div>';
+  return names.map(n => {
+    const A = ca[n], B = cb[n], ref = A || B;
+    const rows = ref.labels.map((label, i) => {
+      const va = A ? A.stats[i] : undefined, vb = B ? B.stats[ref === B && !A ? i : B.labels.indexOf(label)] : undefined;
+      if ((va === undefined || va === null) && (vb === undefined || vb === null)) return '';
+      const na = compareNum(va), nb = compareNum(vb);
+      const lowerBetter = (n === 'passing' && /INT|SACK|^SCK/.test(label)) || /^(FUM|LOST)$/.test(label);
+      let wa = '', wb = '';
+      if (na !== null && nb !== null && na !== nb && label !== 'GP') { const aWins = lowerBetter ? na < nb : na > nb; wa = aWins ? ' cmp-win' : ''; wb = aWins ? '' : ' cmp-win'; }
+      return '<div class="cmp-row"><span class="cmp-v' + wa + '">' + (va === undefined ? '—' : va) + '</span><span class="cmp-l">' + (ref.names[i] || label) + '</span><span class="cmp-v' + wb + '">' + (vb === undefined ? '—' : vb) + '</span></div>';
+    }).join('');
+    return '<div class="cmp-cat"><div class="cmp-cat-title">' + ref.display + '</div>' + rows + '</div>';
+  }).join('');
+}
+function compareParseSeason(key) { const [y, t] = key.split('-'); return { year: Number(y), type: Number(t) }; }
+async function renderCompareTable() {
+  const box = document.getElementById('cmp-table');
+  if (!box || !compareState) return;
+  const L = compareLabels();
+  if (!compareState.b) { box.innerHTML = '<div class="rpp-empty">' + L.pick + '</div>'; return; }
+  const { year, type } = compareParseSeason(compareState.season);
+  box.innerHTML = '<div class="rpp-empty">' + L.loading + '</div>';
+  const snap = compareState;
+  try {
+    const [da, db] = await Promise.all([fetchPlayerStats(snap.a.id, type), fetchPlayerStats(snap.b.id, type)]);
+    if (compareState !== snap || snap.season !== compareState.season) return;
+    box.innerHTML = compareTableHtml(da, db, year, snap.a, snap.b);
+  } catch (e) { if (compareState === snap) box.innerHTML = '<div class="rpp-empty">' + L.err + '</div>'; }
+}
+function renderCompareView() {
+  const L = compareLabels();
+  const st = compareState;
+  const seasons = [['2025-2', L.s25], ['2026-2', L.s26], ['2026-1', L.s26p]];
+  document.getElementById('modal-content').innerHTML =
+    '<div class="rpp-hero"><div class="rpp-hero-top"><div><div class="rpp-hero-name">⚖ ' + L.title + '</div></div></div></div>' +
+    '<div class="rpp-body cmp-body">' +
+      '<button type="button" class="rpp-gamelog-btn" data-compare-back>' + L.back + '</button>' +
+      '<div class="cmp-heads">' + compareHeaderHtml(st.a) + '<span class="cmp-vs">VS</span>' +
+        (st.b ? compareHeaderHtml(st.b) : '<div class="cmp-head cmp-head-empty">?</div>') + '</div>' +
+      '<input type="search" id="cmp-search" class="cmp-search" autocomplete="off" placeholder="' + L.search + '">' +
+      '<div id="cmp-results" class="cmp-results"></div>' +
+      '<div class="rpp-season-tabs cmp-tabs">' + seasons.map(([k, label]) => '<button type="button" class="rpp-season-tab' + (st.season === k ? ' active' : '') + '" data-compare-season="' + k + '">' + label + '</button>').join('') + '</div>' +
+      '<div id="cmp-table"></div>' +
+    '</div>';
+  renderCompareTable();
+}
+function openComparePlayers() {
+  if (!activePlayerProfile) return;
+  const jerseyEl = document.querySelector('.rpp-hero-jersey');
+  compareState = { a: { id: activePlayerProfile.athleteId, name: activePlayerProfile.name, teamKey: activePlayerProfile.teamKey, jersey: jerseyEl ? jerseyEl.textContent.replace('#', '') : '' }, b: null, season: '2025-2' };
+  renderCompareView();
+}
+let compareSearchToken = 0;
+async function runCompareSearch(raw) {
+  const L = compareLabels();
+  const box = document.getElementById('cmp-results');
+  if (!box) return;
+  const q = normalizeSearch(raw || '');
+  const token = ++compareSearchToken;
+  if (q.length < 2) { box.innerHTML = ''; return; }
+  const rosters = await Promise.all(ALL_TEAM_KEYS.map(key => ensureRosterLoaded(key).then(players => ({ key, players }))));
+  if (token !== compareSearchToken) return;
+  const found = [];
+  rosters.forEach(({ key, players }) => (players || []).forEach(p => {
+    if (!p.id || !p.name || (compareState && String(p.id) === String(compareState.a.id))) return;
+    const n = normalizeSearch(p.name);
+    if (n.split(/\s+/).some(part => part.indexOf(q) === 0) || n.indexOf(q) !== -1) found.push(Object.assign({}, p, { teamKey: key }));
+  }));
+  found.sort((x, y) => x.name.localeCompare(y.name));
+  box.innerHTML = found.length ? found.slice(0, 8).map(p => {
+    const t = TEAMS[p.teamKey];
+    return '<button type="button" class="search-result" data-compare-pick="' + escapeRoster(p.id) + '" data-pick-name="' + escapeRoster(p.name) + '" data-pick-team="' + escapeRoster(p.teamKey) + '" data-pick-jersey="' + escapeRoster(String(p.jersey || '')) + '"><span class="search-result-icon"><img src="' + teamLogo(p.teamKey) + '" alt="" loading="lazy" decoding="async"></span><span><strong>' + escapeRoster(p.name) + '</strong><small>' + t.city + ' ' + t.name + (p.position ? ' · ' + escapeRoster(p.position) : '') + '</small></span></button>';
+  }).join('') : '<div class="search-empty">' + L.none + '</div>';
+}
+document.addEventListener('click', (ev) => {
+  if (ev.target.closest('[data-compare-open]')) { openComparePlayers(); return; }
+  if (!compareState) return;
+  if (ev.target.closest('[data-compare-back]')) {
+    const a = compareState.a; compareState = null;
+    openNflPlayerProfile(a.id, a.name, a.teamKey, a.jersey);
+    return;
+  }
+  const pick = ev.target.closest('[data-compare-pick]');
+  if (pick) {
+    compareState.b = { id: pick.dataset.comparePick, name: pick.dataset.pickName, teamKey: pick.dataset.pickTeam, jersey: pick.dataset.pickJersey };
+    renderCompareView();
+    return;
+  }
+  const tab = ev.target.closest('[data-compare-season]');
+  if (tab) {
+    compareState.season = tab.dataset.compareSeason;
+    document.querySelectorAll('[data-compare-season]').forEach(b => b.classList.toggle('active', b === tab));
+    renderCompareTable();
+  }
+});
+document.addEventListener('input', (ev) => {
+  if (ev.target && ev.target.id === 'cmp-search') runCompareSearch(ev.target.value);
+});
+
 function modalShowsPlayerProfile() {
   const box = document.querySelector('.modal-box'), ov = document.getElementById('modal-overlay');
   return !!(box && box.classList.contains('rpp-modal') && ov && ov.style.display !== 'none');
@@ -15060,11 +15208,21 @@ document.getElementById('retirement-panel').addEventListener('click', event => {
 </script>
 
 
-<script async src="https://www.instagram.com/embed.js"></script>
 <script>
   // Ensure Instagram embeds render even if the script loads after the DOM.
+  // embed.js is loaded lazily (only when an Instagram grid nears the viewport) to speed up first paint.
+  let igLoading = false;
+  function loadInstagramScript() {
+    if (window.instgrm || igLoading) return;
+    igLoading = true;
+    const sc = document.createElement('script');
+    sc.async = true; sc.src = 'https://www.instagram.com/embed.js';
+    sc.onload = () => setTimeout(processInstagramEmbeds, 100);
+    document.head.appendChild(sc);
+  }
   function processInstagramEmbeds() {
     if (window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process();
+    else loadInstagramScript();
   }
   // Re-inject a container's blockquotes so Instagram re-renders them (needed when the
   // same post appears on a page that was hidden at first paint, e.g. the News page).
@@ -15081,7 +15239,15 @@ document.getElementById('retirement-panel').addEventListener('click', event => {
     processInstagramEmbeds();
   }
   window.reprocessInstagramIn = reprocessInstagramIn;
-  window.addEventListener('load', () => setTimeout(processInstagramEmbeds, 400));
+  (function () {
+    const grids = document.querySelectorAll('.instagram-grid');
+    if (!grids.length) return;
+    if (!('IntersectionObserver' in window)) { window.addEventListener('load', () => setTimeout(loadInstagramScript, 1500)); return; }
+    const io = new IntersectionObserver(es => {
+      if (es.some(e => e.isIntersecting)) { io.disconnect(); loadInstagramScript(); }
+    }, { rootMargin: '600px 0px' });
+    grids.forEach(g => io.observe(g));
+  })();
 </script>
 
 <script>
