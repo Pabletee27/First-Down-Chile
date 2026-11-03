@@ -3347,6 +3347,19 @@ a,.cta-link{--lnk:#4da3ff}
 @media(max-width:640px){#fdc-consent{left:8px;right:8px;bottom:86px;max-width:none}}
 </style>
 <meta name="google-adsense-account" content="ca-pub-4479325129802660">
+<style id="fdc-ads-css">
+.fdc-ad{display:none;position:relative;margin:22px auto;max-width:100%;text-align:center;min-height:100px;overflow:hidden}
+html[data-ads-consent="granted"] .fdc-ad.on{display:block}
+.fdc-ad::before{content:'PUBLICIDAD';display:block;margin:0 0 4px;font:800 9px/12px Arial,sans-serif;letter-spacing:.2em;color:#6f86a6}
+.fdc-ad ins{display:block;margin:0 auto}
+.fdc-ad-lb,.fdc-ad-wide{width:100%;max-width:970px}
+.fdc-ad-inline{grid-column:1/-1;width:100%;margin:8px 0}
+.fdc-pair{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.fdc-pair .fdc-ad{margin:0}
+.fdc-ad-sticky{position:fixed;left:50%;bottom:0;transform:translateX(-50%);z-index:9000;width:728px;max-width:100%;margin:0;min-height:60px;background:#0a1830;border-radius:6px 6px 0 0}
+.fdc-ad-sticky .x{position:absolute;top:-12px;right:8px;width:22px;height:22px;border-radius:50%;border:1px solid #3a5a86;background:#020f26;color:#8cc4ff;font:900 12px/20px Arial;cursor:pointer;padding:0}
+@media(max-width:820px){.fdc-ad-sticky{bottom:78px;width:320px}}
+</style>
 </head>
 <body>
 <a class="skip-link" href="#inicio">Saltar al contenido principal</a>
@@ -3516,7 +3529,7 @@ a,.cta-link{--lnk:#4da3ff}
         <button class="standalone-back" id="temporada-back">← Volver al inicio</button>
         <div class="standalone-kicker" id="temporada-kicker">EL CENTRO DE FIRST DOWN CHILE</div>
         <h1 class="standalone-title" id="temporada-page-title">Calendario de <span>temporada regular</span></h1>
-        <p class="standalone-copy" id="temporada-page-copy">Elige una semana o tu equipo y revisa los 272 partidos convertidos a hora de Chile, con líneas de apuesta cuando estén disponibles.</p>
+        <p class="standalone-copy" id="temporada-page-copy">Elige una semana o tu equipo y revisa los 272 partidos convertidos a hora de Chile, con TV y estadio.</p>
       </header>
       <div class="standalone-body" id="temporada-body"></div>
     </div>
@@ -3896,7 +3909,7 @@ a,.cta-link{--lnk:#4da3ff}
     <div class="today-games-head">
       <div class="today-games-kicker" id="today-games-kicker">🔥 HOY EN LA NFL</div>
       <h2 class="today-games-title" id="today-games-title">Partidos de hoy</h2>
-      <p class="today-games-copy" id="today-games-copy">Todo lo que se juega hoy, con hora de Chile y línea de apuestas.</p>
+      <p class="today-games-copy" id="today-games-copy">Todo lo que se juega hoy, con hora de Chile y canal de TV.</p>
       <div id="today-games-summary"></div>
     </div>
     <div class="games-collapse-bar" id="today-games-collapse-bar">
@@ -4153,8 +4166,7 @@ a,.cta-link{--lnk:#4da3ff}
   </div>
 
   <div class="footer-note" id="footer-note">
-    Récords 2025 y calendario: Pro-Football-Reference.com · Líneas de apuestas de Semana 1 (DraftKings vía Covers.com,<br>
-    actualizadas al 14 de mayo de 2026 — pueden cambiar antes del kickoff). No hay líneas reales publicadas aún para semanas 2-18.<br>
+    Récords 2025 y calendario: Pro-Football-Reference.com.<br>
     Cadena de TV: confirmada para partidos especiales (aperturas, Thanksgiving, Black Friday, Navidad e internacional);<br>
     el resto se infiere del patrón habitual de paquetes (jueves=Prime Video, domingo noche=NBC, lunes=ESPN/ABC,<br>
     domingo tarde=CBS o FOX según conferencia del equipo local) y puede variar por flexión de horario.<br>
@@ -6409,7 +6421,7 @@ const I18N = {
     champTitle: 'Últimos campeones del Super Bowl',
     brandTag: 'Calendario NFL 2026 en hora de Chile · Sígueme en',
     legal: 'First Down Chile es un proyecto independiente hecho por y para aficionados. No está afiliado, respaldado ni asociado oficialmente con la NFL, sus equipos, la NFL Enterprises LLC ni ninguna cadena de televisión mencionada.<br>Todos los nombres, logos, colores y marcas de los equipos son propiedad de sus respectivos dueños y se usan aquí únicamente con fines informativos y editoriales.<br>Los datos (horarios, cuotas, cadena de TV) se entregan "tal cual" y pueden cambiar sin aviso — verifica siempre las fuentes oficiales antes de planificar algo importante.',
-    footerNote: 'Récords 2025 y calendario: Pro-Football-Reference.com · Líneas de apuestas de Semana 1 (DraftKings vía Covers.com,<br>actualizadas al 14 de mayo de 2026 — pueden cambiar antes del kickoff). No hay líneas reales publicadas aún para semanas 2-18.<br>Cadena de TV: confirmada para partidos especiales (aperturas, Thanksgiving, Black Friday, Navidad e internacional);<br>el resto se infiere del patrón habitual de paquetes (jueves=Prime Video, domingo noche=NBC, lunes=ESPN/ABC,<br>domingo tarde=CBS o FOX según conferencia del equipo local) y puede variar por flexión de horario.<br>Logos vía ESPN.',
+    footerNote: 'Récords 2025 y calendario: Pro-Football-Reference.com · Cadena de TV: confirmada para partidos especiales (aperturas, Thanksgiving, Black Friday, Navidad e internacional);<br>el resto se infiere del patrón habitual de paquetes (jueves=Prime Video, domingo noche=NBC, lunes=ESPN/ABC,<br>domingo tarde=CBS o FOX según conferencia del equipo local) y puede variar por flexión de horario.<br>Logos vía ESPN.',
     weekLabel: 'Semana ',
     byesLabel: 'Descansan esta semana: ',
     noGamesFor: 'No hay partidos de ',
@@ -6461,11 +6473,11 @@ const I18N = {
     calendarStat: 'partidos · 18 semanas',
     temporadaKicker: 'EL CENTRO DE FIRST DOWN CHILE',
     temporadaTitle: 'Calendario de temporada regular',
-    temporadaCopy: 'Elige una semana o tu equipo y revisa los 272 partidos convertidos a hora de Chile, con líneas de apuesta cuando estén disponibles.',
+    temporadaCopy: 'Elige una semana o tu equipo y revisa los 272 partidos convertidos a hora de Chile, con TV y estadio.',
     calendarStageCta: 'Ver calendario completo →',
     todayGamesKicker: '🔥 HOY EN LA NFL',
     todayGamesTitle: 'Partidos de hoy',
-    todayGamesCopy: 'Todo lo que se juega hoy, con hora de Chile y línea de apuestas.',
+    todayGamesCopy: 'Todo lo que se juega hoy, con hora de Chile y canal de TV.',
     todayBadgeLive: 'EN VIVO',
     todayBadgeUpcoming: 'HOY',
     predictPick: 'Gana',
@@ -6526,7 +6538,7 @@ const I18N = {
     champTitle: 'Latest Super Bowl Champions',
     brandTag: '2026 NFL schedule in Chile time · Follow me on',
     legal: 'First Down Chile is an independent project made by and for fans. It is not affiliated with, endorsed by, or officially associated with the NFL, its teams, NFL Enterprises LLC, or any TV network mentioned.<br>All team names, logos, colors, and trademarks are property of their respective owners and are used here strictly for informational and editorial purposes.<br>Data (schedules, odds, TV coverage) is provided "as is" and may change without notice — always check official sources before planning anything important.',
-    footerNote: '2025 records and schedule: Pro-Football-Reference.com · Week 1 betting lines (DraftKings via Covers.com,<br>updated as of May 14, 2026 — may change before kickoff). No real lines published yet for weeks 2-18.<br>TV network: confirmed for special games (openers, Thanksgiving, Black Friday, Christmas and international);<br>the rest is inferred from the usual package pattern (Thursday=Prime Video, Sunday night=NBC, Monday=ESPN/ABC,<br>Sunday afternoon=CBS or FOX depending on the home team\'s conference) and may vary due to flex scheduling.<br>Logos via ESPN.',
+    footerNote: '2025 records and schedule: Pro-Football-Reference.com · TV network: confirmed for special games (openers, Thanksgiving, Black Friday, Christmas and international);<br>the rest is inferred from the usual package pattern (Thursday=Prime Video, Sunday night=NBC, Monday=ESPN/ABC,<br>Sunday afternoon=CBS or FOX depending on the home team\'s conference) and may vary due to flex scheduling.<br>Logos via ESPN.',
     weekLabel: 'Week ',
     byesLabel: 'On bye this week: ',
     noGamesFor: 'No ',
@@ -6578,11 +6590,11 @@ const I18N = {
     calendarStat: 'games · 18 weeks',
     temporadaKicker: 'THE FIRST DOWN CHILE HUB',
     temporadaTitle: 'Regular season schedule',
-    temporadaCopy: 'Choose a week or your team and see all 272 games converted to Chile time, with betting lines when available.',
+    temporadaCopy: 'Choose a week or your team and see all 272 games converted to Chile time, with TV and stadium info.',
     calendarStageCta: 'See full schedule →',
     todayGamesKicker: '🔥 TODAY IN THE NFL',
     todayGamesTitle: 'Playing today',
-    todayGamesCopy: 'Everything happening today, in Chile time, with the betting line.',
+    todayGamesCopy: 'Everything happening today, in Chile time, with TV info.',
     todayBadgeLive: 'LIVE',
     todayBadgeUpcoming: 'TODAY',
     predictPick: 'Take',
@@ -6720,6 +6732,7 @@ function calendarMidHtml(g, liveEntry, atLabel) {
 }
 
 function buildOdds(g) {
+  return '';
   if (!g.odds) return '';
   const fav = TEAMS[g.odds.favorite].name;
   return (
@@ -7148,7 +7161,7 @@ function getTodaysGames(now = new Date()) {
 }
 
 // Homepage "Hoy juegan" section — separate from the featured-game hero carousel so it can list
-// every game happening today (not just one at a time), each with its betting line when available.
+// every game happening today (not just one at a time), each with TV info.
 // Hides itself completely when nothing is scheduled today.
 function renderTodayGames() {
   const section = document.getElementById('today-games');
@@ -13065,6 +13078,34 @@ const PREVIEW_ARTICLES = {
   'New Orleans Saints|Dallas Cowboys': 'week3-saints-cowboys-2026',
   'Arizona Cardinals|Green Bay Packers': 'week3-cardinals-packers-2026'
 };
+// ===== Sin contenido de apuestas (política de AdSense): se filtran líneas, spreads, cuotas y fuentes de apuestas =====
+(function fdcNoBetting(){
+  var RX=/spread|moneyline|over\/under|\btotal (de|of) \d|\btotal (bajísimo|alto|bajo)|apuestas|apostar|casas? de apuesta|betting|\bbets?\b|cuota|handicap|hándicap|FanDuel|DraftKings|Kalshi|Covers|sportsbook|\bATS\b|\bunderdogs?\b|[-+]\d{3}\b|cubr(ir|e|iendo|ió|ieron|a)\b|\bcover(s|ed|ing)?\b|\bodds\b|\bthe line\b|\bline (swung|moved|movement|opened)|\bla línea\b(?! (ofensiva|defensiva|de scrimmage|de golpeo))|línea más|línea (cerrada|abierta|favorece)|favorit[oa]s? (por|de) (un |una |casi |más de |solo |apenas )?(\d|medio|un|dos|tres|cuatro|cinco|seis|siete|ocho|nueve|diez)|favored by|\d[\d.,]*[- ]point (favorite|favourite)|point favorite|favorites? by|favorit[oa]s? por|\bfavorite\b.*\b\d[\d.,]* points?|puntos? (de ventaja )?(en|según) la línea|mercado|market|\bunder de|\bover de|\bthe (under|over)\b|\bel (under|over|total)\b|\btotal (en|of|at|is)\b|\bthe total\b|\btotal \(\d|\b(\w+)-point (home |road |slight |clear )?favorites?\b|\balto \(\d|[-+]\d+[,.]\d\b|mejor apuesta|apuesta por|se inclina por|ventaja de (casi |unos )?\d+|\d+-point edge|probabilidad|probability|\bpicks?\b.*\b(cover|spread)/i;
+  function split(s){return s.replace(/([.!?])\s+(?=[A-ZÁÉÍÓÚÑ¿¡"“0-9])/g,'$1\u0001').split('\u0001')}
+  function clean(s){if(typeof s!=='string'||!RX.test(s))return s;var k=split(s).filter(function(x){return !RX.test(x)});return k.join(' ').trim()}
+  function nm(a){return String(a||'').replace(/^.*\s(\w+)$/,'$1')}
+  function fixLang(o,n){
+    if(!o)return;
+    var tt=o.title;
+    ['summary','lead'].forEach(function(k){if(o[k]){var c=clean(o[k]);o[k]=c}});
+    if(Array.isArray(o.paragraphs))o.paragraphs=o.paragraphs.map(clean).filter(function(p){return p&&p.length>25});
+    if(Array.isArray(o.facts))o.facts=o.facts.filter(function(f){return !/^(l[ií]nea|line|total|apuestas?|betting|handicap|over)/i.test(String(f[0]||''))&&!RX.test(String(f[1]||''))});
+    if(RX.test(tt||'')){var L=n&&n.logos&&n.logos.length===2?n.logos:null;o.title=L?(o===n.en?'Preview: ':'Previa: ')+L[0]+' @ '+L[1]:clean(tt)||tt}
+    if(!o.summary){var p=o.lead||(o.paragraphs||[])[0]||'';o.summary=p.length>200?p.slice(0,197).replace(/\s\S*$/,'')+'…':p}
+    if(!o.lead&&(o.paragraphs||[]).length)o.lead=o.paragraphs[0];
+  }
+  function fix(n){if(!n||typeof n!=='object')return;fixLang(n.es,n);fixLang(n.en,n);
+    if(n.source)n.source=String(n.source).split(/\s*\/\s*/).filter(function(x){return !/covers|fanduel|draftkings|kalshi|sportsline|predictem|clutchpoints|betting|oddsshark|action network/i.test(x)}).join(' / ');
+    if(n.sourceUrl&&/betting|covers\.com|fanduel|draftkings|kalshi|sportsline|predictem|oddsshark|actionnetwork|clutchpoints/i.test(n.sourceUrl))n.sourceUrl='';
+    if(n.source==='')n.source='First Down Chile'}
+  try{
+    if(typeof NEWS!=='undefined')NEWS.forEach(fix);
+    if(typeof PREVIEW_ARTICLES!=='undefined')Object.keys(PREVIEW_ARTICLES).forEach(function(k){var v=PREVIEW_ARTICLES[k];if(v&&typeof v==='object'&&(v.es||v.en))fix(v)});
+    if(typeof GAME_LEAN!=='undefined')Object.keys(GAME_LEAN).forEach(function(k){var v=GAME_LEAN[k];['es','en'].forEach(function(l){if(v[l]){var c=clean(v[l]);if(c)v[l]=c;else delete v[l]}});if(!v.es&&!v.en)delete GAME_LEAN[k]});
+    if(typeof GAMES!=='undefined')GAMES.forEach(function(g){g.odds=null});
+  }catch(e){console.error('nobet',e)}
+})();
+
 
 function openPreseasonGameCenter(game) {
   if (!game) return;
@@ -16131,6 +16172,39 @@ if(box){
 }
 window.fdcConsent={get:read,open:show};
 var v=read();if(v)apply(v);else{apply(null);setTimeout(show,900)}
+})();
+</script>
+<script id="fdc-ads-js">
+/* Espacios publicitarios (AdSense). Cada espacio queda oculto hasta que (1) el visitante acepta cookies publicitarias
+   y (2) pegas el ID de bloque (data-ad-slot) de AdSense en FDC_AD_SLOTS. Sin ID de bloque no se muestra nada. */
+(function(){
+var CLIENT='ca-pub-4479325129802660';
+var FDC_AD_SLOTS={home1:'',home2:'',home3a:'',home3b:'',cal:'',calList:'',team:'',ros:'',sticky:''};
+function slot(cls,key){
+  var id=FDC_AD_SLOTS[key],d=document.createElement('div');d.className='fdc-ad '+cls;d.setAttribute('role','complementary');d.setAttribute('aria-label','Publicidad');
+  if(id){d.classList.add('on');d.innerHTML='<ins class="adsbygoogle" style="display:block" data-ad-client="'+CLIENT+'" data-ad-slot="'+id+'" data-ad-format="auto" data-full-width-responsive="true"></ins>';
+    setTimeout(function(){try{(window.adsbygoogle=window.adsbygoogle||[]).push({})}catch(e){}},400)}
+  return d}
+function home(){
+  var feat=document.getElementById('home-duo'),promos=document.querySelector('.home-promos'),sync=document.getElementById('agregar-calendario');
+  if(document.getElementById('ad-home-1')||!feat||!feat.parentNode)return;
+  var a=slot('fdc-ad-lb','home1');a.id='ad-home-1';var tt=feat.previousElementSibling;feat.parentNode.insertBefore(a,(tt&&tt.classList.contains('home-sec-title'))?tt:feat);
+  if(promos){var b=slot('fdc-ad-wide','home2');b.id='ad-home-2';var pt=promos.previousElementSibling;promos.parentNode.insertBefore(b,(pt&&pt.classList.contains('home-sec-title'))?pt:promos)}
+  if(sync){var c=document.createElement('div');c.className='fdc-pair';c.id='ad-home-3';c.appendChild(slot('fdc-ad-rect','home3a'));c.appendChild(slot('fdc-ad-rect','home3b'));sync.parentNode.insertBefore(c,sync.nextSibling)}
+}
+function cal(){
+  var body=document.getElementById('temporada-body');if(!body)return;var g=document.getElementById('games');if(!g)return;
+  if(!document.getElementById('ad-cal-top')){var tb=body.querySelector('.toolbar');if(tb){var a=slot('fdc-ad-lb','cal');a.id='ad-cal-top';tb.parentNode.insertBefore(a,tb.nextSibling)}}
+  Array.prototype.forEach.call(g.querySelectorAll('.day-group'),function(dg,i){if(i%2===1&&!dg.querySelector('.fdc-ad'))dg.appendChild(slot('fdc-ad-inline','calList'))});
+  var tv=g.querySelector('.tv-table');if(tv&&!g.querySelector('.tv-ad')){var t=slot('fdc-ad-inline tv-ad','team');tv.parentNode.insertBefore(t,tv)}
+}
+function ros(){var gr=document.getElementById('roster-groups');if(!gr||document.getElementById('ad-ros'))return;var a=slot('fdc-ad-wide','ros');a.id='ad-ros';gr.parentNode.insertBefore(a,gr)}
+function sticky(){
+  if(document.getElementById('ad-sticky')||!FDC_AD_SLOTS.sticky)return;
+  var s=slot('fdc-ad-sticky','sticky');s.id='ad-sticky';
+  var x=document.createElement('button');x.className='x';x.type='button';x.setAttribute('aria-label','Cerrar anuncio');x.textContent='×';x.onclick=function(){s.remove()};s.appendChild(x);document.body.appendChild(s)}
+function run(){try{home();cal();ros();sticky()}catch(e){console.error('ads',e)}}
+setTimeout(run,1500);setInterval(run,1500);
 })();
 </script>
 </body></html>
