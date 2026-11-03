@@ -2250,6 +2250,14 @@
   /* ---- Rosters ---- */
   .roster-control-panel { display:grid; grid-template-columns:minmax(220px,1fr) minmax(180px,.7fr); gap:12px; margin-bottom:18px; }
   .roster-select,.roster-search { width:100%; min-height:46px; padding:0 14px; border:1px solid var(--select-border); border-radius:13px; background:var(--select-bg); color:var(--text-primary); font-size:13px; font-weight:850; }
+  .roster-filter-bar { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:-6px 0 18px; }
+  .roster-chip { min-height:36px; padding:0 14px; border:1px solid var(--select-border); border-radius:999px; background:var(--select-bg); color:var(--text-primary); font-size:12px; font-weight:900; letter-spacing:.3px; cursor:pointer; transition:background .15s,border-color .15s,transform .1s; }
+  .roster-chip:hover { border-color:rgba(70,189,127,.7); }
+  .roster-chip:active { transform:scale(.96); }
+  .roster-chip.is-active { background:#46bd7f; border-color:#46bd7f; color:#06140d; }
+  .roster-chip-sep { width:1px; height:22px; background:var(--select-border); margin:0 2px; }
+  .roster-sort { width:auto; min-width:150px; min-height:36px; margin-left:auto; padding:0 12px; border-radius:999px; font-size:12px; }
+  @media (max-width:640px) { .roster-filter-bar { flex-wrap:nowrap; overflow-x:auto; padding-bottom:6px; -webkit-overflow-scrolling:touch; } .roster-chip,.roster-sort { flex:0 0 auto; } .roster-sort { margin-left:0; } }
   .roster-select:focus,.roster-search:focus { outline:2px solid rgba(70,189,127,.55); outline-offset:2px; }
   .roster-hero-card { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:16px; padding:18px; border:1px solid rgba(70,189,127,.28); border-radius:20px; background:linear-gradient(135deg,rgba(70,189,127,.10),var(--card-bg-1) 52%,rgba(var(--team-accent-rgb),.08)); }
   .roster-team-head { display:flex; align-items:center; gap:13px; }
@@ -3143,6 +3151,7 @@
           <select class="roster-select" id="roster-team-select" aria-label="Elegir equipo para ver roster"></select>
           <input class="roster-search" id="roster-player-search" type="search" placeholder="Filtrar por nombre o posición…">
         </div>
+        <div class="roster-filter-bar" id="roster-filter-bar" role="group" aria-label="Filtrar por posición"></div>
         <div class="roster-hero-card" id="roster-hero-card"></div>
         <div class="roster-status" id="roster-status">Elige un equipo para cargar su roster.</div>
         <div class="roster-groups" id="roster-groups"></div>
@@ -7700,7 +7709,7 @@ function rosterGroupFor(position) {
   if (p === 'OFFENSE') return 'offense';
   if (p === 'DEFENSE') return 'defense';
   if (p === 'SPECIAL TEAMS' || p === 'SPECIAL') return 'special';
-  if (['QB','RB','FB','WR','TE','C','G','OG','T','OT','OL'].includes(p)) return 'offense';
+  if (['QB','RB','HB','FB','WR','TE','C','G','OG','LG','RG','T','OT','LT','RT','OL'].includes(p)) return 'offense';
   if (['DE','DT','DL','NT','LB','ILB','OLB','MLB','CB','S','FS','SS','DB'].includes(p)) return 'defense';
   if (['K','PK','P','LS'].includes(p)) return 'special';
   return 'other';
@@ -7753,13 +7762,63 @@ function renderRosterHero(teamKey, players, stateText) {
   document.getElementById('roster-status').textContent = stateText || labels.updated;
 }
 
+// ---- Filtros avanzados de roster: posición + orden ----
+const ROSTER_POS_FILTERS = [
+  {id:'all', label:'Todos', en:'All'},
+  {id:'OFF', label:'Ofensiva', en:'Offense'},
+  {id:'DEF', label:'Defensiva', en:'Defense'},
+  {id:'ST', label:'Especiales', en:'Special'},
+  {sep:true},
+  {id:'QB', label:'QB'}, {id:'RB', label:'RB'}, {id:'WR', label:'WR'}, {id:'TE', label:'TE'}, {id:'OL', label:'OL'},
+  {id:'DL', label:'DL'}, {id:'LB', label:'LB'}, {id:'DB', label:'DB'}, {id:'K', label:'K / P'}
+];
+const ROSTER_POS_MAP = {QB:'QB', RB:'RB', HB:'RB', FB:'RB', WR:'WR', TE:'TE', C:'OL', G:'OL', OG:'OL', LG:'OL', RG:'OL', T:'OL', OT:'OL', LT:'OL', RT:'OL', OL:'OL',
+  DE:'DL', DT:'DL', NT:'DL', DL:'DL', LB:'LB', ILB:'LB', OLB:'LB', MLB:'LB', CB:'DB', S:'DB', FS:'DB', SS:'DB', DB:'DB', K:'K', PK:'K', P:'K', LS:'K'};
+let rosterPosFilter = 'all', rosterSortMode = 'pos';
+function rosterPosGroup(position) {
+  return ROSTER_POS_MAP[String(position || '').toUpperCase().trim()] || '';
+}
+function rosterPassesPosFilter(p) {
+  if (rosterPosFilter === 'all') return true;
+  const side = rosterGroupFor(p.position || p.group);
+  if (rosterPosFilter === 'OFF') return side === 'offense';
+  if (rosterPosFilter === 'DEF') return side === 'defense';
+  if (rosterPosFilter === 'ST') return side === 'special';
+  return rosterPosGroup(p.position) === rosterPosFilter;
+}
+function rosterSortPlayers(list) {
+  const toNum = (v, d) => { const n = parseInt(String(v === undefined || v === null ? '' : v).replace(/\D/g, ''), 10); return isNaN(n) ? d : n; };
+  const cmp = {
+    name: (a,b) => String(a.name).localeCompare(String(b.name)),
+    num: (a,b) => toNum(a.jersey, 9999) - toNum(b.jersey, 9999),
+    age: (a,b) => toNum(a.age, 99) - toNum(b.age, 99),
+    exp: (a,b) => toNum(b.experience, -1) - toNum(a.experience, -1)
+  }[rosterSortMode];
+  return cmp ? list.slice().sort(cmp) : list;
+}
+function renderRosterFilterBar() {
+  const bar = document.getElementById('roster-filter-bar');
+  if (!bar) return;
+  const en = LANG === 'en';
+  const sorts = [['pos', en ? 'Sort: position' : 'Orden: posición'], ['name', en ? 'Sort: name' : 'Orden: nombre'], ['num', en ? 'Sort: number' : 'Orden: número'], ['age', en ? 'Sort: youngest' : 'Orden: más jóvenes'], ['exp', en ? 'Sort: experience' : 'Orden: experiencia']];
+  bar.innerHTML = ROSTER_POS_FILTERS.map(f => f.sep ? '<span class="roster-chip-sep"></span>'
+    : '<button type="button" class="roster-chip' + (rosterPosFilter === f.id ? ' is-active' : '') + '" data-pos-filter="' + f.id + '" aria-pressed="' + (rosterPosFilter === f.id) + '">' + (en && f.en ? f.en : f.label) + '</button>').join('') +
+    '<select class="roster-select roster-sort" id="roster-sort-select" aria-label="' + (en ? 'Sort players' : 'Ordenar jugadores') + '">' + sorts.map(o => '<option value="' + o[0] + '"' + (rosterSortMode === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select>';
+}
+function refreshRosterView() {
+  renderRosterFilterBar();
+  if (activeRosterTeam) { renderRosterList(activeRosterTeam); return; }
+  const query = (document.getElementById('roster-player-search').value || '').trim();
+  if (query.length >= 2 || rosterPosFilter !== 'all') renderGlobalRosterSearch(query);
+}
+
 function renderRosterList(teamKey) {
   const labels = rosterCopy();
   const query = (document.getElementById('roster-player-search').value || '').trim().toLowerCase();
   const allPlayers = rosterCache[teamKey] || [];
   const players = allPlayers.filter(p => {
     const haystack = [p.name,p.position,p.college,p.experience].join(' ').toLowerCase();
-    return !query || haystack.includes(query);
+    return (!query || haystack.includes(query)) && rosterPassesPosFilter(p);
   });
   renderRosterHero(teamKey, allPlayers, allPlayers.length ? labels.updated : labels.fallback);
   if (!players.length) {
@@ -7768,7 +7827,7 @@ function renderRosterList(teamKey) {
   }
   const groupLabels = {offense:labels.groupOff, defense:labels.groupDef, special:labels.groupST, other:labels.groupOther};
   const grouped = {offense:[], defense:[], special:[], other:[]};
-  players.forEach(player => grouped[rosterGroupFor(player.position || player.group)].push(player));
+  rosterSortPlayers(players).forEach(player => grouped[rosterGroupFor(player.position || player.group)].push(player));
   document.getElementById('roster-groups').innerHTML = ['offense','defense','special','other'].filter(key => grouped[key].length).map(key => {
     const rows = grouped[key].map(player => {
       // College is shown on desktop but dropped on phones (.roster-meta-college is hidden under
@@ -7843,14 +7902,15 @@ async function renderGlobalRosterSearch(query) {
   rosters.forEach(({ key, players }) => {
     (players || []).forEach(p => {
       const haystack = [p.name, p.position].join(' ').toLowerCase();
-      if (haystack.includes(q)) matches.push(Object.assign({}, p, { teamKey: key }));
+      if ((!q || haystack.includes(q)) && rosterPassesPosFilter(p)) matches.push(Object.assign({}, p, { teamKey: key }));
     });
   });
   document.getElementById('roster-status').textContent = matches.length
-    ? (LANG === 'en' ? matches.length + ' players match "' + query + '" across the league' : matches.length + ' jugadores coinciden con "' + query + '" en toda la liga')
+    ? (query ? (LANG === 'en' ? matches.length + ' players match "' + query + '" across the league' : matches.length + ' jugadores coinciden con "' + query + '" en toda la liga') : (LANG === 'en' ? matches.length + ' players across the league' : matches.length + ' jugadores en toda la liga'))
     : labels.empty;
   if (!matches.length) { document.getElementById('roster-groups').innerHTML = ''; return; }
   matches.sort((a, b) => a.name.localeCompare(b.name));
+  if (rosterSortMode !== 'pos') matches.splice(0, matches.length, ...rosterSortPlayers(matches));
   const rows = matches.map(player => {
     const team = TEAMS[player.teamKey];
     const details = [team.city + ' ' + team.name, player.height, player.weight].filter(Boolean).join(' · ');
@@ -11805,6 +11865,7 @@ function applyStaticTranslations() {
   document.getElementById('leaders-copy').textContent = LANG === 'en' ? 'The season’s best in every category, updated live straight from nflverse — no fixed numbers, always current.' : 'Los mejores de la temporada en cada categoría, actualizados en vivo directo desde nflverse — sin datos fijos, siempre al día.';
   if (document.querySelector('.wrap').classList.contains('leaders-mode')) { renderLeadersFilters(); renderLeadersList(); }
   document.getElementById('roster-player-search').placeholder = LANG === 'en' ? 'Filter by name or position…' : 'Filtrar por nombre o posición…';
+  if (typeof renderRosterFilterBar === 'function') renderRosterFilterBar();
   if (document.getElementById('roster-team-select').options.length) {
     const current = document.getElementById('roster-team-select').value;
     document.getElementById('roster-team-select').innerHTML = '';
@@ -13529,15 +13590,27 @@ document.getElementById('roster-team-select').addEventListener('change', event =
     document.getElementById('roster-source').textContent = '';
     document.getElementById('roster-status').textContent = rosterCopy().choose;
     const query = (document.getElementById('roster-player-search').value || '').trim();
-    if (query.length >= 2) renderGlobalRosterSearch(query);
+    if (query.length >= 2 || rosterPosFilter !== 'all') renderGlobalRosterSearch(query);
     return;
   }
   loadRoster(value);
 });
+document.getElementById('roster-filter-bar').addEventListener('click', event => {
+  const btn = event.target.closest('[data-pos-filter]');
+  if (!btn) return;
+  rosterPosFilter = btn.dataset.posFilter;
+  refreshRosterView();
+});
+document.getElementById('roster-filter-bar').addEventListener('change', event => {
+  if (event.target.id !== 'roster-sort-select') return;
+  rosterSortMode = event.target.value;
+  refreshRosterView();
+});
+renderRosterFilterBar();
 document.getElementById('roster-player-search').addEventListener('input', (event) => {
   if (activeRosterTeam) { renderRosterList(activeRosterTeam); return; }
   const query = (event.target.value || '').trim();
-  if (query.length >= 2) {
+  if (query.length >= 2 || (rosterPosFilter !== 'all' && query.length === 0)) {
     renderGlobalRosterSearch(query);
   } else {
     globalRosterSearchToken++; // cancel any in-flight global search
