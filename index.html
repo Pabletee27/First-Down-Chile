@@ -3013,6 +3013,340 @@
   @media(max-width:600px) { .career-main { padding:16px; } .career-hero { padding:70px 20px 34px; } .career-hero h1 { letter-spacing:-2px; } .career-back { top:16px; right:16px; } .position-grid,.decision-grid,.combine-grid,.offer-grid,.mode-choice-grid,.minigame-options,.combine-options { grid-template-columns:1fr; } .career-identity-grid { grid-template-columns:minmax(0,1fr) 88px; } .career-preview { min-height:420px; padding:22px 12px; } .jersey { width:225px; height:250px; transform:scale(.94); } .player-strip { grid-template-columns:auto 1fr; } .career-reset { grid-column:1/-1; } .season-progress { overflow-x:auto; grid-template-columns:repeat(18,52px); } .draft-stepper { grid-template-columns:repeat(2,1fr); } .draft-panel,.contract-market { padding:18px; } .draft-head,.market-head { flex-direction:column; } .draft-board { min-height:340px; padding:20px 15px; } .contract-facts,.offer-terms { grid-template-columns:repeat(3,1fr); } .mode-switcher { flex-direction:column; } .offer-card { min-height:310px; } .offer-card-content { max-width:78%; } .offer-legend-photo { inset:0 0 0 28%; width:72%; object-position:52% 12%; } .trade-actions { grid-template-columns:1fr; } .story-card { padding:22px 18px; } .celebration-card { padding:34px 18px 26px; } }
   @media(prefers-reduced-motion:reduce) { .offer-card { animation:none; } .offer-legend-photo { transition:none; transform:none; } }
 </style>
+<style id="fdc-design">:root{--sb-bg:#000;--sb-fg:#fff;--sb-mut:#9aa0aa;--sb-acc:#d00;--sb-line:#2a2c31;--sb-h:76px}
+#espn-scorebar{position:sticky;top:0;z-index:210;background:var(--sb-bg);border-bottom:1px solid var(--sb-line);display:flex;align-items:stretch;height:var(--sb-h);max-width:none!important;width:100%;margin:0!important}
+#espn-scorebar .esb-label{flex:0 0 auto;display:flex;flex-direction:column;justify-content:center;padding:0 18px;background:var(--sb-acc);color:#fff;font-weight:900;letter-spacing:.5px;font-size:20px;line-height:1}
+#espn-scorebar .esb-label small{font-size:10px;font-weight:700;letter-spacing:1px;margin-top:4px;opacity:.9}
+#espn-scorebar .esb-track{display:flex;overflow-x:auto;scrollbar-width:none;flex:1}
+#espn-scorebar .esb-track::-webkit-scrollbar{display:none}
+#espn-scorebar .esb-game{flex:0 0 auto;min-width:176px;display:grid;grid-template-columns:1fr auto;grid-template-rows:1fr 1fr;align-items:center;column-gap:12px;padding:6px 16px;border:0;border-right:1px solid var(--sb-line);background:none;color:var(--sb-fg);cursor:pointer;text-align:left;font-family:inherit}
+#espn-scorebar .esb-team{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;letter-spacing:.3px;grid-column:1;background:none!important;border:0!important;padding:0!important;color:var(--sb-fg)!important;border-radius:0!important;height:auto!important;box-shadow:none!important}
+#espn-scorebar .esb-team *{background:none!important;border:0!important;padding:0!important;color:inherit!important;height:auto!important}
+#espn-scorebar .esb-team img{width:20px!important;height:20px!important;object-fit:contain}
+#espn-scorebar .esb-sc{font-size:15px;font-weight:900;margin-left:auto}
+#espn-scorebar .esb-st{grid-column:2;grid-row:1/3;font-size:11px;font-weight:800;color:var(--sb-mut);text-align:right;line-height:1.25;align-self:center}
+#espn-scorebar .esb-game.live .esb-st{color:#ff4d4d}
+#espn-scorebar .esb-game.final .esb-st{color:var(--sb-fg)}
+.site-nav{top:var(--sb-h)!important;max-width:none!important}
+body>*:not(#espn-scorebar):not(.site-nav):not(script):not(style){max-width:1240px;margin-left:auto;margin-right:auto}
+body{padding:0 0 64px!important}
+.wrap{max-width:1240px}
+@media(max-width:760px){:root{--sb-h:68px}#espn-scorebar .esb-label{padding:0 12px;font-size:16px}#espn-scorebar .esb-game{min-width:150px;padding:6px 12px}}
+:root{--bg1:#0d1b2e;--bg2:#08121f;--bg3:#060d18;--sb-bg:#061329;--sb-acc:#d50a0a;--sb-line:#1c2f4a;--sb-mut:#8da2c0;--card-bg-1:#0f2036;--card-bg-2:#0f2036;--card-border:#1e3552;--divider:#1e3552;--gold-text:#4da3ff;--red:#d50a0a}
+html,body{background:#060d18!important}body::before{background:linear-gradient(#08121f,#060d18)!important}
+.site-nav{background:#0a1a30!important;border:0!important;border-bottom:3px solid #d50a0a!important;border-radius:0!important;box-shadow:none!important;backdrop-filter:none!important;margin:0!important;min-height:56px!important}
+.nav-link{background:transparent!important;border:0!important;border-radius:0!important;text-transform:uppercase;font-weight:800!important;font-size:12px!important;letter-spacing:.6px;border-bottom:3px solid transparent!important;color:#d8e2f2!important}
+.nav-link:hover{border-bottom-color:#4da3ff!important;color:#fff!important}.nav-social{background:#d50a0a!important}
+.brand-hero{border-radius:0!important;border:0!important}.brand-banner{max-height:290px;object-fit:cover}
+.intro-title{font-size:clamp(40px,6vw,76px)!important;font-weight:900!important;text-transform:uppercase;font-style:italic;letter-spacing:-1.5px!important;line-height:.95!important}.intro-title span{color:#d50a0a!important}
+.intro-kicker,.calendar-kicker,.today-games-kicker{color:#4da3ff!important;font-weight:900!important;letter-spacing:2px!important}
+.today-games,.personal-section,.calendar-stage,.career-promo,.calsync-section,.instagram-section,.featured-game,.card,.quick-card,.news-section{background:#0f2036!important;border:1px solid #1e3552!important;border-radius:6px!important;box-shadow:none!important}
+.today-games::before{height:4px;background:linear-gradient(90deg,#d50a0a,#4da3ff)!important;animation:none!important}
+.quick-card{border-top:3px solid #d50a0a!important}.quick-card[data-action="live"]{background:#d50a0a!important}.quick-card[data-action="bracket"]{background:linear-gradient(145deg,#4da3ff,#d99400)!important}.quick-card[data-action="bracket"] *{color:#1a1200!important}
+.quick-card span:first-child{background:rgba(77,163,255,.16)!important;color:#4da3ff!important;border-radius:3px!important}.quick-card[data-action="live"] span:first-child{background:rgba(255,255,255,.22)!important;color:#fff!important}
+.card:hover{border-color:#4da3ff!important;transform:none!important}
+.calendar-title,h2,.today-games-title{text-transform:uppercase;font-weight:900!important;letter-spacing:-.5px!important}
+.calendar-stat{background:#d50a0a!important;border:0!important;border-radius:4px!important}.calendar-stat b,.calendar-stat span{color:#fff!important}
+.countdown-banner{background:#061329!important;border:1px solid #1e3552!important;border-left:4px solid #4da3ff!important;border-radius:0!important}.countdown-banner b{color:#4da3ff!important}
+.today-games button{background:#061329!important;border:1px solid #1e3552!important;border-left:4px solid #d50a0a!important;border-radius:3px!important;color:#fff!important;text-transform:uppercase;font-weight:900!important}.today-games button *{color:#fff!important}
+.editorial-link{color:#4da3ff!important}.tab-btn.active,.conference-tab.active,.preseason-tab.active{background:#d50a0a!important;box-shadow:none!important}
+.featured-game{border-left:4px solid #d50a0a!important}.badge{border-radius:3px!important;text-transform:uppercase}
+
+html,body{background:#020f26!important}body::before{background:linear-gradient(#021838 0,#031126 520px,#04101f 900px,#060d18)!important}
+.brand-hero{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;overflow:visible!important;aspect-ratio:auto!important;min-height:0!important;max-height:none!important;height:auto!important;margin:0 0 -90px!important;width:100%!important}
+.brand-hero::after{display:none!important}
+.brand-hero>img.brand-banner{display:block!important;width:100%!important;height:auto!important;max-height:none!important;object-fit:cover!important;
+ -webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent),linear-gradient(transparent,#000 8%,#000 62%,transparent);-webkit-mask-composite:source-in;
+ mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent),linear-gradient(transparent,#000 8%,#000 62%,transparent);mask-composite:intersect}
+.brand-hero>img.brand-profile{display:none!important}
+.header-controls{position:absolute;top:14px;left:14px;right:14px;z-index:5}
+.intro-panel{position:relative;z-index:2}
+@media(max-width:700px){.brand-hero>img.brand-banner{display:block!important;min-height:210px;object-position:center}.brand-hero>img.brand-profile{display:none!important}.brand-hero{margin-bottom:-40px!important}}
+.brand-hero{margin-bottom:-30px!important}.brand-hero>img.brand-banner{-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent),linear-gradient(transparent,#000 6%,#000 80%,transparent)!important;mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent),linear-gradient(transparent,#000 6%,#000 80%,transparent)!important}.intro-panel{padding-top:8px}@media(max-width:700px){.brand-hero>img.brand-banner{min-height:0!important;height:auto!important;object-fit:contain!important;transform:scale(1.25);transform-origin:center 40%}.brand-hero{margin-bottom:0!important;overflow:hidden!important}.header-controls{z-index:6}}
+.brand-hero{margin-bottom:-20px!important}.brand-hero>img.brand-banner{-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent),linear-gradient(transparent,#000 5%,#000 90%,transparent)!important;mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent),linear-gradient(transparent,#000 5%,#000 90%,transparent)!important}
+@media(max-width:700px){.brand-hero>img.brand-banner{transform:none!important;object-fit:cover!important;min-height:0!important;height:auto!important;object-position:50% 50%!important}.brand-hero{overflow:visible!important}}
+@media(max-width:700px){.brand-hero>img.brand-banner{height:215px!important;min-height:215px!important;object-fit:cover!important;object-position:50% 38%!important;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent),linear-gradient(transparent,#000 4%,#000 88%,transparent)!important;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent),linear-gradient(transparent,#000 4%,#000 88%,transparent)!important}.brand-hero{margin-bottom:6px!important}}
+.home-sec-title{display:flex;align-items:center;gap:12px;margin:38px 0 14px;font:900 13px/1 'Helvetica Neue',Arial,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#fff}
+.home-sec-title::before{content:'';width:5px;height:22px;background:#d50a0a;transform:skewX(-14deg);box-shadow:3px 0 0 #4da3ff}
+.home-sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,#1e3552,transparent)}
+.home-duo{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:16px;align-items:stretch;margin:0}
+.home-duo>*{margin:0!important;height:100%}
+.home-duo #featured-game{min-height:300px}
+.home-duo #today-games{display:flex;flex-direction:column;justify-content:flex-start}
+.home-promos{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.home-promos>*{margin:0!important}
+.home-promos .career-promo{height:100%;min-height:220px}
+/* quick tiles */
+.quick-grid{gap:12px!important;margin:0!important;grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.quick-card{position:relative;display:flex!important;flex-direction:column;justify-content:flex-end;min-height:132px;padding:16px!important;text-align:left;overflow:hidden;transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.quick-card::after{content:'→';position:absolute;right:14px;top:14px;color:#4da3ff;font-weight:900;opacity:0;transform:translateX(-6px);transition:.18s}
+.quick-card:hover{transform:translateY(-3px)!important;border-color:#4da3ff!important;background:#13294a!important}.quick-card:hover::after{opacity:1;transform:none}
+.quick-card .quick-icon{position:absolute;left:16px;top:14px;width:42px;height:42px;display:grid;place-items:center;font-size:21px;border-radius:10px!important;background:rgba(213,10,10,.16)!important;color:#fff!important}
+.quick-card[data-action="live"] .quick-icon{background:rgba(255,255,255,.22)!important}
+.quick-card .quick-title{font-size:16px!important;font-weight:900!important;letter-spacing:-.2px}
+.quick-card .quick-desc{font-size:12px!important;opacity:.78;margin-top:3px}
+/* featured game */
+.featured-game{background:linear-gradient(120deg,rgba(6,19,41,.88),rgba(10,26,48,.7))!important}
+.featured-game .featured-label,#featured-label{font-weight:900;letter-spacing:.2em}
+.today-games{padding:22px!important}
+.today-games-title{font-size:26px!important}
+/* mi first down */
+.personal-section{border-top:3px solid #d50a0a!important}
+@media(max-width:900px){.home-duo,.home-promos{grid-template-columns:1fr}.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.quick-card{min-height:118px}.home-sec-title{margin-top:28px}}
+
+/* paleta NFL: azul escudo + rojo NFL + blanco */
+.quick-card[data-action="bracket"]{background:linear-gradient(135deg,#0a3a7a,#013369)!important;border-color:#2d7ff9!important;color:#fff!important}
+.quick-card[data-action="bracket"] *{color:#fff!important}
+.quick-card[data-action="live"]{background:#d50a0a!important}
+.home-sec-title::before{background:#d50a0a;box-shadow:3px 0 0 #fff}
+.quick-card{border-top-color:#2d7ff9!important}
+.personal-section{border-top-color:#2d7ff9!important}
+a,.cta-link{--lnk:#4da3ff}
+.home-duo #today-games{border-top:3px solid #2d7ff9}
+
+.bracket-promo{border-color:rgba(77,163,255,.45)!important;background:linear-gradient(120deg,#04122b 0%,#0a2a5c 60%,#013369 120%)!important}
+.bracket-promo .career-promo-kicker{color:#8cc4ff!important}
+.bracket-promo-button{background:#fff!important;color:#013369!important}
+.bracket-promo-button:hover{background:#dcecff!important}
+.career-promo-kicker{color:#8cc4ff!important}
+
+/* tamaño fijo para el partido destacado y las tarjetas de hoy */
+.home-duo{--duo-h:400px}
+.home-duo #featured-game,.home-duo .featured-game{height:var(--duo-h)!important;min-height:var(--duo-h)!important;max-height:var(--duo-h)!important;overflow:hidden;display:flex!important;flex-direction:column;justify-content:center}
+.featured-game .fg-photo{background-size:cover!important;background-position:center!important}
+.home-duo #today-games{height:var(--duo-h)!important;overflow-y:auto}
+.today-games-grid{grid-auto-rows:1fr}
+.today-game-card{min-height:150px;height:100%}
+.today-game-teams img{width:44px!important;height:44px!important;object-fit:contain!important}
+@media(max-width:900px){.home-duo{--duo-h:auto}.home-duo #featured-game,.home-duo .featured-game{height:300px!important;min-height:300px!important;max-height:300px!important}.home-duo #today-games{height:auto!important}}
+/* ===== M: páginas internas en estilo FDC azul NFL ===== */
+.standalone-hero{border-radius:6px!important;border:1px solid #1e3552!important;border-left:4px solid #d50a0a!important;background:linear-gradient(120deg,#07162d 0%,#0a2a5c 70%,#013369 130%)!important;box-shadow:none!important}
+.standalone-hero::before,.standalone-hero::after{display:none!important}
+.standalone-kicker{color:#8cc4ff!important;letter-spacing:.22em!important;font-weight:900!important}
+.standalone-title{font-style:italic;text-transform:uppercase;letter-spacing:-.5px!important}
+.standalone-title span{color:#4da3ff!important}
+.standalone-back{border-radius:4px!important;background:rgba(255,255,255,.08)!important;border:1px solid #2d7ff9!important;color:#fff!important}
+.standalone-back:hover{background:#2d7ff9!important}
+/* títulos de bloque con barra */
+.week-heading,.conf-title,.division-title,.standings-division-name,.roster-group-title,.day-label{position:relative}
+.conf-title{padding-left:14px;text-transform:uppercase;letter-spacing:.04em}
+.conf-title::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%) skewX(-14deg);width:5px;height:70%;background:#d50a0a;box-shadow:3px 0 0 #fff}
+.day-label{color:#8cc4ff!important;letter-spacing:.2em!important;font-weight:900!important}
+.standings-division-name,.division-title{color:#fff!important;text-transform:uppercase;letter-spacing:.12em;border-left:4px solid #2d7ff9;padding-left:10px}
+/* pestañas conferencia / chips */
+.conference-tabs{border-radius:6px!important;background:#0a1830!important;border:1px solid #1e3552!important}
+.conference-tab{border-radius:4px!important;font-weight:900!important;letter-spacing:.08em;text-transform:uppercase}
+.conference-tab.active,.conference-tab[aria-selected="true"]{background:#013369!important;border-bottom:3px solid #d50a0a!important;color:#fff!important;box-shadow:none!important}
+.standalone-section .tab-btn,.roster-chip{border-radius:4px!important;text-transform:uppercase;letter-spacing:.06em;font-weight:900}
+.standalone-section .tab-btn.active,.standalone-section .tab-btn[aria-selected="true"],.roster-chip.is-active{background:#2d7ff9!important;border-color:#2d7ff9!important;color:#fff!important;box-shadow:none!important}
+/* selector de semana */
+.week-picker,.calendar-filters,.standings-division-card,.standings-playoff-picture,.standings-playoff-guide,.roster-control-panel,.roster-hero-card,.roster-group{border-radius:6px!important;border:1px solid #1e3552!important;background:#0c1c33!important;box-shadow:none!important}
+.week-current{border-radius:4px!important;background:linear-gradient(120deg,#013369,#0a3a7a)!important;border:1px solid #2d7ff9!important}
+.week-arrow{border-radius:4px!important}
+.week-arrow:hover{background:#2d7ff9!important;color:#fff!important}
+.week-btn.active,.week-btn.is-current{background:#2d7ff9!important;color:#fff!important}
+.games-collapse-btn{border-radius:4px!important;background:linear-gradient(120deg,#013369,#0a3a7a)!important;border:1px solid #2d7ff9!important;box-shadow:none!important}
+.games-collapse-icon{color:#8cc4ff!important}
+/* tarjetas de partido */
+.day-group .card,.game-section .card{border-radius:6px!important;border:1px solid #1e3552!important;border-left:4px solid #2d7ff9!important;background:#0c1c33!important;box-shadow:none!important;transition:transform .15s,border-color .15s}
+.day-group .card:hover,.game-section .card:hover{transform:translateY(-2px);border-color:#4da3ff!important;border-left-color:#d50a0a!important}
+.card-open-hint{color:#4da3ff!important;letter-spacing:.12em!important;font-weight:900!important}
+/* filas de posiciones */
+.standings-row,.standings-team-row{transition:background .15s}
+.standings-row:hover,.standings-team-row:hover{background:rgba(45,127,249,.12)!important}
+.standings-rank{color:#4da3ff!important;font-weight:900!important}
+.standings-record{border-radius:4px!important;background:#013369!important;color:#fff!important;font-weight:900!important}
+/* roster */
+.roster-player{border-radius:4px!important;border:1px solid #1e3552!important;background:#0f2036!important}
+.roster-player.is-clickable:hover{border-color:#4da3ff!important;background:#13294a!important}
+.roster-number{color:#4da3ff!important;font-weight:900!important}
+.roster-position{border-radius:4px!important;background:#013369!important;color:#fff!important;font-weight:900!important}
+.roster-group-title{color:#fff!important;text-transform:uppercase;letter-spacing:.16em;border-left:4px solid #d50a0a;padding-left:12px!important}
+.roster-group-title span{background:#2d7ff9!important;color:#fff!important;border-radius:4px!important}
+.roster-count-pill{border-radius:4px!important;background:#2d7ff9!important;color:#fff!important}
+.roster-kicker{color:#8cc4ff!important}
+.roster-select,.roster-search,.calendar-filter{border-radius:4px!important;background:#0a1830!important;border-color:#1e3552!important}
+.roster-select:focus,.roster-search:focus{outline:2px solid #2d7ff9!important}
+.roster-sort{border-radius:4px!important}
+/* líderes */
+.game-leader-card,.leaders-col,.leaders-row{border-radius:6px!important;border-color:#1e3552!important}
+.game-leader-cat{color:#8cc4ff!important;letter-spacing:.14em!important;font-weight:900!important}
+.game-leader-val{color:#fff!important;font-weight:900!important}
+.calendar-kicker,.calendar-stat{color:#8cc4ff!important}
+
+.roster-group-title span{min-width:26px;height:22px;display:inline-grid;place-items:center;padding:0 7px;font-size:11px;font-weight:900;line-height:1}
+.roster-chip{background:#0a1830!important;border-color:#1e3552!important;color:#dbe6f5!important}
+.roster-chip:hover{border-color:#4da3ff!important}
+.roster-sort{background:#0a1830!important;border-radius:4px!important;text-transform:none}
+
+#espn-scorebar .esb-label{border:0;cursor:pointer;font-family:inherit;text-align:left;position:relative;transition:background .15s}
+#espn-scorebar .esb-label:hover{background:#b80808}
+#espn-scorebar .esb-label small{display:block}
+#espn-scorebar .esb-caret{font-style:normal;font-size:11px;margin-left:2px}
+#espn-scorebar .esb-label.is-other small span{text-decoration:underline;text-underline-offset:2px}
+#espn-scorebar{position:relative}
+.esb-pop{position:absolute;top:100%;left:0;z-index:99999;width:268px;padding:12px;background:#0a1830;border:1px solid #2d7ff9;border-top:3px solid #d50a0a;border-radius:0 0 6px 6px;box-shadow:0 18px 40px rgba(0,0,0,.55)}
+.esb-pop[hidden]{display:none}
+.esb-pop-h{font:900 10px/1 Arial,sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#8cc4ff;margin-bottom:10px}
+.esb-pop-g{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.esb-pop-g button{height:34px;border:1px solid #1e3552;border-radius:4px;background:#0f2036;color:#fff;font:900 13px Arial,sans-serif;cursor:pointer}
+.esb-pop-g button:hover{border-color:#4da3ff;background:#13294a}
+.esb-pop-g button.is-cur{box-shadow:inset 0 -3px 0 #d50a0a}
+.esb-pop-g button.is-sel{background:#2d7ff9;border-color:#2d7ff9}
+.esb-pop-now{width:100%;margin-top:10px;height:34px;border:1px solid #2d7ff9;border-radius:4px;background:transparent;color:#fff;font:800 12px Arial,sans-serif;cursor:pointer}
+.esb-pop-now:hover{background:#2d7ff9}
+@media(max-width:640px){.esb-pop{width:calc(100vw - 16px);max-width:300px}}
+/* ===== N: Calendario temporada regular ===== */
+#temporada .standalone-hero{padding-bottom:18px!important}
+#temporada-body{display:flex;flex-direction:column;gap:12px}
+#temporada .countdown-banner{margin:0!important}
+/* barra de semanas (chips) */
+#temporada .week-picker{padding:10px 12px!important;background:#0a1830!important}
+#temporada .week-picker-head,#temporada .week-stepper{display:none!important}
+.cal-weeks{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding:2px 0 4px}
+.cal-wk{flex:0 0 auto;min-width:64px;padding:7px 10px 6px;border:1px solid #1e3552;border-radius:4px;background:#0f2036;color:#dbe6f5;cursor:pointer;text-align:center;font-family:inherit;transition:border-color .15s,background .15s}
+.cal-wk b{display:block;font:900 15px/1 Arial,sans-serif;letter-spacing:.02em;color:#fff}
+.cal-wk small{display:block;margin-top:3px;font:700 9px/1 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#7f93ad}
+.cal-wk:hover{border-color:#4da3ff}
+.cal-wk.is-cur{box-shadow:inset 0 -3px 0 #d50a0a}
+.cal-wk.is-sel{background:#2d7ff9;border-color:#2d7ff9}
+.cal-wk.is-sel small{color:#dcecff}
+/* herramientas: una sola fila compacta */
+#temporada .toolbar{display:flex!important;flex-wrap:wrap;align-items:center;gap:8px!important;margin:0!important}
+#temporada .toolbar .week-picker{flex:1 1 100%}
+#temporada .tab-btn{min-height:34px;padding:0 12px!important;font-size:11px!important}
+#temporada .toolbar .actions{margin-left:auto;display:flex;gap:6px}
+#temporada .export-btn{min-height:34px;padding:0 12px!important;font-size:11px!important;border-radius:4px!important}
+/* filtros colapsables */
+.cal-filters-toggle{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 12px;border:1px solid #2d7ff9;border-radius:4px;background:transparent;color:#fff;font:900 11px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+.cal-filters-toggle:hover{background:#2d7ff9}
+#temporada .calendar-filters{margin:0!important;padding:12px!important}
+#temporada .calendar-filters.cal-collapsed{display:none!important}
+#temporada .calendar-filters-label{display:none}
+/* encabezado de día */
+#temporada .day-group{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px}
+#temporada .day-label{grid-column:1/-1;margin:14px 0 0!important;display:flex;align-items:center;gap:10px}
+#temporada .day-label::before{content:'';width:5px;height:18px;background:#d50a0a;transform:skewX(-14deg);box-shadow:3px 0 0 #fff;flex:0 0 auto}
+/* tarjeta compacta */
+#temporada .day-group .card{position:relative;margin:0!important;padding:34px 14px 26px!important;min-height:0!important;display:block}
+#temporada .card .badges{position:absolute;top:8px;left:12px;right:12px;display:flex;flex-wrap:nowrap;gap:5px;overflow:hidden;margin:0!important}
+#temporada .card .badge{font-size:9px!important;padding:2px 6px!important;border-radius:3px!important;white-space:nowrap}
+#temporada .card .main-row{display:grid!important;grid-template-columns:1fr 112px 1fr!important;align-items:center;gap:8px!important;margin:0!important}
+#temporada .card .team{display:flex;align-items:center;gap:10px;min-width:0}
+#temporada .card .team.home{flex-direction:row-reverse;text-align:right}
+#temporada .card .logo-wrap{width:46px!important;height:46px!important;flex:0 0 auto}
+#temporada .card .logo-wrap img{width:100%;height:100%;object-fit:contain}
+#temporada .card .team-info{min-width:0}
+#temporada .card .team-name{font-size:17px!important;line-height:1.05!important;font-weight:900!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#temporada .card .team-city{font-size:10px!important;line-height:1.2}
+#temporada .card .team-record{font-size:10px!important;color:#7f93ad!important}
+#temporada .card .mid{text-align:center;min-width:0}
+#temporada .card .mid .at{display:none}
+#temporada .card .mid .time{font-size:24px!important;line-height:1!important;font-weight:900!important;color:#fff}
+#temporada .card .mid .time-et{font-size:10px!important;color:#7f93ad;margin-top:3px}
+#temporada .card .mid .stadium{position:absolute;left:14px;bottom:7px;font-size:10px!important;color:#7f93ad;max-width:55%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0!important}
+#temporada .card .mid .roof{display:none}
+#temporada .card .card-open-hint{position:absolute;right:14px;bottom:7px;margin:0!important;font-size:9px!important}
+@media(max-width:900px){#temporada .day-group{grid-template-columns:1fr}#temporada .toolbar .actions{margin-left:0;width:100%}}
+@media(max-width:520px){#temporada .card .main-row{grid-template-columns:1fr 78px 1fr!important}#temporada .card .team-name{font-size:14px!important}#temporada .card .logo-wrap{width:36px!important;height:36px!important}#temporada .card .mid .time{font-size:19px!important}#temporada .card .team-city{display:none}}
+
+#temporada .day-group .card{padding:34px 14px 36px!important}
+#temporada .card .mid .stadium{bottom:10px!important}
+#temporada .card .card-open-hint{bottom:10px!important}
+#temporada .export-btn:not(.secondary){background:#2d7ff9!important;color:#fff!important;border-color:#2d7ff9!important}
+#temporada .export-btn.secondary{background:#0f2036!important;border:1px solid #1e3552!important;color:#fff!important}
+#temporada .games-collapse-btn{min-height:40px!important}
+
+#temporada .card .main-row,#temporada .card .mid,#temporada .card .team{position:static!important}
+#temporada .card .mid .stadium{left:14px!important;right:auto!important;bottom:10px!important;top:auto!important;transform:none!important;width:auto}
+#temporada .toolbar .tab-btn{width:auto!important;flex:0 0 auto!important}
+#temporada .toolbar .actions{flex:0 0 auto}
+@media(max-width:640px){
+ #temporada .toolbar{gap:6px!important}
+ #temporada .toolbar .tab-btn{flex:1 1 auto!important;text-align:center;font-size:10px!important;padding:0 8px!important}
+ #temporada .cal-filters-toggle{flex:1 1 auto;justify-content:center}
+ #temporada .toolbar .actions{width:100%;display:grid!important;grid-template-columns:1fr 1fr 1fr}
+ #temporada .card .mid .stadium{display:none}
+ #temporada .day-group .card{padding:32px 12px 30px!important}
+}
+/* ===== Vista por equipo ===== */
+#temporada.team-mode #games > .card,#temporada.team-mode #games > .bye-card{display:none!important}
+#temporada.team-mode .games-collapse-bar,#temporada.team-mode #week-heading,#temporada.team-mode #week-dates{display:none!important}
+.tv-wrap{display:flex;flex-direction:column;gap:12px}
+.tv-head{position:relative;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding:20px 22px;border:1px solid #1e3552;border-left:4px solid var(--tv,#d50a0a);border-radius:6px;background:linear-gradient(120deg,#07162d 0%,#0a2a5c 75%,#013369 130%);overflow:hidden}
+.tv-head::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 12% 50%,var(--tv,#d50a0a) -80%,transparent 55%);opacity:.35;pointer-events:none}
+.tv-head>*{position:relative;z-index:1}
+.tv-logo{width:84px;height:84px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
+.tv-kick{font:900 10px/1 Arial,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#8cc4ff}
+.tv-name{margin:6px 0 4px;font:900 34px/1 Arial,sans-serif;font-style:italic;text-transform:uppercase;letter-spacing:-.5px;color:#fff}
+.tv-sub{font:600 12px/1.4 Arial,sans-serif;color:#9fb3cc}
+.tv-stats{display:flex;gap:10px}
+.tv-stat{min-width:78px;padding:10px 12px;border:1px solid #1e3552;border-radius:4px;background:rgba(2,15,38,.6);text-align:center}
+.tv-stat b{display:block;font:900 22px/1 Arial,sans-serif;color:#fff}
+.tv-stat small{display:block;margin-top:5px;font:800 9px/1 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#7f93ad}
+.tv-next{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid #2d7ff9;border-radius:6px;background:rgba(45,127,249,.1);cursor:pointer;color:#fff;font:700 13px Arial,sans-serif;text-align:left;width:100%}
+.tv-next:hover{background:rgba(45,127,249,.2)}
+.tv-next b{color:#8cc4ff;letter-spacing:.14em;text-transform:uppercase;font-size:10px}
+.tv-next img{width:30px;height:30px;object-fit:contain}
+.tv-next .tv-go{margin-left:auto;color:#4da3ff;font-weight:900;font-size:11px;letter-spacing:.1em}
+.tv-table{display:flex;flex-direction:column;border:1px solid #1e3552;border-radius:6px;overflow:hidden;background:#0c1c33}
+.tv-th,.tv-row{display:grid;grid-template-columns:54px 128px 54px minmax(0,1.6fr) minmax(0,1fr) 112px;gap:12px;align-items:center;padding:0 16px}
+.tv-th{height:34px;background:#0a1830;font:900 9px/1 Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7f93ad;border-bottom:1px solid #1e3552}
+.tv-row{min-height:60px;width:100%;border:0;border-bottom:1px solid #14283f;background:transparent;color:#fff;text-align:left;cursor:pointer;font-family:Arial,sans-serif;transition:background .15s}
+.tv-row:last-child{border-bottom:0}
+.tv-row:hover{background:rgba(45,127,249,.12)}
+.tv-row.is-next{background:rgba(45,127,249,.14);box-shadow:inset 4px 0 0 #2d7ff9}
+.tv-row.is-past{opacity:.92}
+.tv-row.is-bye{cursor:default;min-height:44px;background:repeating-linear-gradient(135deg,#0c1c33,#0c1c33 10px,#0a182c 10px,#0a182c 20px);color:#7f93ad}
+.tv-row.is-bye:hover{background:repeating-linear-gradient(135deg,#0c1c33,#0c1c33 10px,#0a182c 10px,#0a182c 20px)}
+.tv-wk{font:900 18px/1 Arial,sans-serif;color:#4da3ff}
+.tv-when b{display:block;font:900 13px/1.1 Arial,sans-serif;color:#fff}
+.tv-when small{display:block;margin-top:3px;font:700 10px/1 Arial,sans-serif;color:#7f93ad;letter-spacing:.04em}
+.tv-loc{display:inline-grid;place-items:center;width:40px;height:22px;border-radius:3px;font:900 10px Arial,sans-serif;letter-spacing:.08em;background:#0f2036;border:1px solid #1e3552;color:#9fb3cc}
+.tv-loc.home{background:#013369;border-color:#2d7ff9;color:#fff}
+.tv-opp{display:flex;align-items:center;gap:12px;min-width:0}
+.tv-opp img{width:38px;height:38px;object-fit:contain;flex:0 0 auto}
+.tv-opp b{display:block;font:900 16px/1.1 Arial,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tv-opp small{display:block;margin-top:3px;font:600 10px/1 Arial,sans-serif;color:#7f93ad}
+.tv-tags{display:flex;flex-wrap:wrap;gap:4px;min-width:0}
+.tv-tag{padding:2px 6px;border-radius:3px;font:800 9px Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;border:1px solid #1e3552;background:#0f2036;color:#9fb3cc;white-space:nowrap}
+.tv-tag.hot{border-color:#d50a0a;color:#ff8a8a;background:rgba(213,10,10,.12)}
+.tv-res{justify-self:end;text-align:right}
+.tv-res b{display:inline-block;min-width:64px;padding:6px 8px;border-radius:4px;text-align:center;font:900 14px/1 Arial,sans-serif;background:#0f2036;border:1px solid #1e3552;color:#fff}
+.tv-res.w b{background:#0e5f3a;border-color:#2ecc83}
+.tv-res.l b{background:#6b1414;border-color:#d50a0a}
+.tv-res small{display:block;margin-top:4px;font:800 9px Arial,sans-serif;letter-spacing:.12em;color:#7f93ad}
+.tv-res.live b{background:#d50a0a;border-color:#d50a0a}
+.tv-line{font:700 11px Arial,sans-serif;color:#9fb3cc}
+@media(max-width:900px){
+ .tv-head{grid-template-columns:auto 1fr}.tv-stats{grid-column:1/-1}
+ .tv-th{display:none}
+ .tv-row{grid-template-columns:38px minmax(0,1fr) auto;grid-template-areas:"wk opp res" "wk when res";gap:2px 10px;padding:10px 12px;min-height:0}
+ .tv-wk{grid-area:wk}.tv-opp{grid-area:opp}.tv-when{grid-area:when}.tv-res{grid-area:res}
+ .tv-loc,.tv-tags{display:none}
+ .tv-row.is-bye{display:flex;gap:14px;align-items:center;padding:12px}.tv-row.is-bye .tv-wk{min-width:20px}
+ .tv-name{font-size:26px}.tv-logo{width:64px;height:64px}
+}
+
+/* ===== Consentimiento de cookies / enlaces legales ===== */
+#fdc-consent{position:fixed;left:16px;bottom:16px;z-index:100000;max-width:440px;padding:18px 18px 16px;border:1px solid #2d7ff9;border-top:3px solid #d50a0a;border-radius:6px;background:#0a1830;color:#dbe6f5;font:500 13px/1.5 Arial,sans-serif;box-shadow:0 22px 50px rgba(0,0,0,.6)}
+#fdc-consent[hidden]{display:none}
+#fdc-consent h2{margin:0 0 6px;font:900 14px/1.2 Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff}
+#fdc-consent p{margin:0 0 12px;color:#b9c8dc}
+#fdc-consent a{color:#4da3ff}
+#fdc-consent .fc-row{display:flex;flex-wrap:wrap;gap:8px}
+#fdc-consent button{flex:1 1 auto;min-height:38px;padding:0 14px;border-radius:4px;border:1px solid #2d7ff9;background:transparent;color:#fff;font:900 11px Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}
+#fdc-consent button.fc-accept{background:#2d7ff9}
+#fdc-consent button:hover{filter:brightness(1.15)}
+#fdc-consent .fc-opts{display:none;margin:0 0 12px;padding:10px 12px;border:1px solid #1e3552;border-radius:4px;background:#0f2036}
+#fdc-consent.is-custom .fc-opts{display:block}
+#fdc-consent label{display:flex;gap:10px;align-items:flex-start;margin:6px 0;color:#dbe6f5}
+#fdc-consent label small{display:block;color:#7f93ad;font-size:11px}
+.fdc-legal-links{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;margin:18px auto 6px;font:700 12px Arial,sans-serif}
+.fdc-legal-links a,.fdc-legal-links button{background:none;border:0;padding:0;color:#8cc4ff;text-decoration:underline;text-underline-offset:3px;cursor:pointer;font:inherit}
+@media(max-width:640px){#fdc-consent{left:8px;right:8px;bottom:86px;max-width:none}}
+</style>
+<meta name="google-adsense-account" content="ca-pub-4479325129802660">
 </head>
 <body>
 <a class="skip-link" href="#inicio">Saltar al contenido principal</a>
@@ -3842,6 +4176,8 @@
     Todos los nombres, logos, colores y marcas de los equipos son propiedad de sus respectivos dueños y se usan aquí únicamente con fines informativos y editoriales.<br>
     Los datos (horarios, cuotas, cadena de TV) se entregan "tal cual" y pueden cambiar sin aviso — verifica siempre las fuentes oficiales antes de planificar algo importante.
   </div>
+<div class="fdc-legal-links" id="fdc-legal-links"><a href="/privacidad.html">Política de privacidad y cookies</a><button type="button" id="fdc-open-consent">Configurar cookies</button></div>
+
 
 </div>
 
@@ -15629,5 +15965,172 @@ document.getElementById('retirement-panel').addEventListener('click', event => {
       window.addEventListener('appinstalled', dismiss);
     }
   })();
+</script>
+
+<div id="fdc-consent" role="dialog" aria-live="polite" aria-labelledby="fc-title" hidden>
+  <h2 id="fc-title">Tu privacidad en First Down Chile</h2>
+  <p>Usamos almacenamiento en tu dispositivo para que el sitio funcione (tu equipo favorito, noticias guardadas, progreso del juego). Con tu permiso, también cookies de <b>publicidad y medición</b> de terceros, como Google, para mostrar anuncios y mantener gratis el sitio. Más detalles en la <a href="/privacidad.html">Política de privacidad y cookies</a>.</p>
+  <div class="fc-opts">
+    <label><input type="checkbox" checked disabled><span><b>Necesarias</b><small>Funcionamiento del sitio. Siempre activas.</small></span></label>
+    <label><input type="checkbox" id="fc-ads"><span><b>Publicidad y medición</b><small>Anuncios (Google AdSense) y estadísticas de uso, que pueden usar cookies.</small></span></label>
+  </div>
+  <div class="fc-row">
+    <button type="button" class="fc-accept" id="fc-accept">Aceptar todo</button>
+    <button type="button" id="fc-reject">Solo necesarias</button>
+    <button type="button" id="fc-custom">Personalizar</button>
+  </div>
+</div>
+<script id="fdc-scorebar-js">(function(){
+function ab(k){try{return (TEAMS[k].espn||'').toUpperCase().replace('WSH','WSH')}catch(e){return k.split(' ').pop().slice(0,3).toUpperCase()}}
+function build(){
+  var bar=document.getElementById('espn-scorebar');
+  if(!bar){bar=document.createElement('div');bar.id='espn-scorebar';bar.innerHTML='<button type="button" class="esb-label" id="esb-label" aria-haspopup="true" aria-expanded="false">NFL<small>SEMANA <span id="esb-week"></span> <i class="esb-caret">&#9662;</i></small></button><div class="esb-pop" id="esb-pop" hidden></div><div class="esb-track" id="esb-track"></div>';document.body.insertBefore(bar,document.body.firstChild);}
+  var cur=(typeof currentWeek!=='undefined')?+currentWeek:8;if(window.__esbWeek==null)window.__esbWeek=cur;var wk=window.__esbWeek;document.getElementById('esb-week').textContent=wk;var lb=document.getElementById('esb-label');if(lb)lb.classList.toggle('is-other',wk!==cur);var pp=document.getElementById('esb-pop');if(pp){var ph='<div class="esb-pop-h">Elige la semana</div><div class="esb-pop-g">';for(var n=1;n<=18;n++)ph+='<button type="button" data-w="'+n+'" class="'+(n===wk?'is-sel ':'')+(n===cur?'is-cur':'')+'">'+n+'</button>';ph+='</div>'+(wk!==cur?'<button type="button" class="esb-pop-now" data-w="'+cur+'">Volver a la semana actual ('+cur+')</button>':'');pp.innerHTML=ph;}
+  var gs=GAMES.filter(function(g){return String(g.week)===String(wk)}).sort(function(a,b){return new Date(a.iso)-new Date(b.iso)});
+  var h='';
+  gs.forEach(function(g,i){
+    var le=null;try{le=findLiveEventByAbbr(TEAM_ABBR[g.away],TEAM_ABBR[g.home])}catch(e){}
+    var cls='',st='',as='',hs='';
+    if(le){var sc=orientedLiveScores(g,le);as=sc.awayScore;hs=sc.homeScore;cls=le.isFinal?'final has-score':'live has-score';var t=(le.event.status&&le.event.status.type)||{};st=le.isFinal?'FINAL':(t.shortDetail||'EN VIVO');}
+    else{var d=new Date(g.iso);var dn=['DOM','LUN','MAR','MIÉ','JUE','VIE','SÁB'][new Date(d.toLocaleString('en-US',{timeZone:displayTimeZone()})).getDay()];st=dn+'<br>'+chileTime24(g.iso)}
+    h+='<button class="esb-game '+cls+'" data-i="'+i+'"><div class="esb-team"><img src="'+teamLogo(g.away)+'" alt="">'+ab(g.away)+'<span class="esb-sc">'+as+'</span></div><div class="esb-team"><img src="'+teamLogo(g.home)+'" alt="">'+ab(g.home)+'<span class="esb-sc">'+hs+'</span></div><div class="esb-st">'+st+'</div></button>';
+  });
+  var tr=document.getElementById('esb-track');tr.innerHTML=h;
+  Array.prototype.forEach.call(tr.querySelectorAll('.esb-game'),function(b){b.onclick=function(){try{openGameCenter(gs[+b.dataset.i])}catch(e){}}});
+}
+function init(){try{build();var lb=document.getElementById('esb-label'),pp=document.getElementById('esb-pop');
+function close(){pp.hidden=true;lb.setAttribute('aria-expanded','false')}
+lb.onclick=function(e){e.stopPropagation();var o=pp.hidden;pp.hidden=!o;lb.setAttribute('aria-expanded',String(o))};
+pp.onclick=function(e){e.stopPropagation();var b=e.target.closest('[data-w]');if(!b)return;window.__esbWeek=+b.dataset.w;build();close()};
+document.addEventListener('click',close);document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});}catch(e){console.error('scorebar',e)}setInterval(function(){try{build()}catch(e){}},30000)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(init,300)});else setTimeout(init,300);
+})();
+</script>
+<script id="home-k-js">(function(){
+function run(){
+  try{
+    var q=function(s){return document.querySelector(s)};
+    var feat=q('#featured-game'),today=q('#today-games'),quick=q('.quick-grid'),cal=q('#calendar-stage'),mi=q('#mi-fdc'),car=q('#career-promo'),br=q('#bracket-promo'),sync=q('#agregar-calendario');
+    if(!feat||!today||!quick||document.getElementById('home-duo'))return;
+    var P=feat.parentNode;var anchor=document.createComment('a');P.insertBefore(anchor,feat);
+    var mk=function(t){var d=document.createElement('div');d.className='home-sec-title';d.textContent=t;return d};
+    var duo=document.createElement('div');duo.className='home-duo';duo.id='home-duo';duo.appendChild(feat);duo.appendChild(today);
+    var promos=document.createElement('div');promos.className='home-promos';if(car)promos.appendChild(car);if(br)promos.appendChild(br);
+    var seq=[mk('Hoy en la NFL'),duo,mk('Explora'),quick,cal,mi,mk('Juega y compite'),promos,sync].filter(Boolean);
+    seq.forEach(function(el){P.insertBefore(el,anchor)});P.removeChild(anchor);
+    var ic={calendar:'📅',preseason:'🏈',standings:'📊',rosters:'👥',live:'🔴',rules:'📘',leaders:'🏅',bracket:'🏆',teams:'🛡️'};
+    Array.prototype.forEach.call(quick.querySelectorAll('.quick-card'),function(c){var i=c.querySelector('.quick-icon');if(i&&ic[c.dataset.action])i.textContent=ic[c.dataset.action]});
+  }catch(e){console.error('home reorder',e)}
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(run,700)});else setTimeout(run,700);
+setTimeout(run,2000);
+})();
+</script>
+<script id="cal-n-js">(function(){
+function setup(){
+  var body=document.getElementById('temporada-body');if(!body)return;
+  var jump=document.getElementById('week-jump'),picker=body.querySelector('.week-picker');
+  if(jump&&picker){
+    var cw=picker.querySelector('.cal-weeks');if(!cw){cw=document.createElement('div');cw.className='cal-weeks';picker.appendChild(cw)}
+    var cur=(typeof currentWeek!=='undefined')?+currentWeek:0;
+    var sig=jump.value+'|'+cur;if(cw.__sig!==sig){cw.__sig=sig;cw.innerHTML=Array.prototype.map.call(jump.options,function(o){var n=+o.value,rg=(o.text.split('·')[1]||'').trim();return '<button type="button" class="cal-wk'+(n===+jump.value?' is-sel':'')+(n===cur?' is-cur':'')+'" data-w="'+n+'"><b>'+n+'</b><small>'+rg.split('–')[0].trim()+'</small></button>'}).join('');
+    }cw.onclick=function(e){var b=e.target.closest('.cal-wk');if(!b)return;jump.value=b.dataset.w;jump.dispatchEvent(new Event('change',{bubbles:true}))};
+    var sel=cw.querySelector('.is-sel');if(sel&&!cw.__done){cw.__done=1;cw.scrollLeft=Math.max(0,sel.offsetLeft-cw.clientWidth/2+30)}
+  }
+  var f=document.getElementById('calendar-filters'),tb=body.querySelector('.toolbar');
+  if(f&&tb&&!document.getElementById('cal-filters-toggle')){
+    f.classList.add('cal-collapsed');
+    var bt=document.createElement('button');bt.type='button';bt.id='cal-filters-toggle';bt.className='cal-filters-toggle';bt.innerHTML='&#9881; Filtros <span>&#9662;</span>';
+    bt.onclick=function(){var c=f.classList.toggle('cal-collapsed');bt.querySelector('span').innerHTML=c?'&#9662;':'&#9652;'};
+    var acts=tb.querySelector('.actions');tb.insertBefore(bt,acts)
+  }
+}
+var mo=new MutationObserver(function(){clearTimeout(window.__calT);window.__calT=setTimeout(function(){mo.disconnect();try{setup()}finally{var bb=document.getElementById('temporada-body');if(bb)mo.observe(bb,{childList:true,subtree:true})}},80)});
+function start(){var b=document.getElementById('temporada-body');if(!b){setTimeout(start,400);return}mo.observe(b,{childList:true,subtree:true});setup()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
+<script id="cal-team-js">(function(){
+var DAYS=['dom','lun','mar','mié','jue','vie','sáb'];
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function build(){
+  var sec=document.getElementById('temporada'),g=document.getElementById('games');
+  if(!sec||!g)return;
+  var team=(typeof currentView!=='undefined'&&currentView==='team')&&typeof currentTeam!=='undefined'?currentTeam:null;
+  var old=g.querySelector('.tv-wrap');
+  if(!team){sec.classList.remove('team-mode');if(old)old.remove();return}
+  var cards=g.querySelectorAll(':scope > .card, :scope > .bye-card');
+  if(!cards.length)return; // aún no se renderiza
+  if(old)old.remove();
+  sec.classList.add('team-mode');
+  var T=TEAMS[team],now=Date.now(),next=null,w=0,l=0,rows='';
+  Array.prototype.forEach.call(cards,function(c){
+    var wk=0;
+    if(c.classList.contains('bye-card')){
+      var m=c.textContent.match(/(\d+)/);wk=m?m[1]:'';
+      rows+='<div class="tv-row is-bye"><span class="tv-wk" style="color:#7f93ad">'+esc(wk)+'</span><span style="grid-column:2/-1;font:900 11px Arial;letter-spacing:.2em;text-transform:uppercase">Semana de descanso</span></div>';return;
+    }
+    var gm=GAMES[+c.dataset.gameIndex];if(!gm)return;
+    var home=gm.home===team,opp=home?gm.away:gm.home,O=TEAMS[opp];
+    var d=new Date(gm.iso),loc=new Date(d.toLocaleString('en-US',{timeZone:displayTimeZone()}));
+    var when='<b>'+DAYS[loc.getDay()].toUpperCase()+' '+loc.getDate()+'/'+(loc.getMonth()+1)+'</b><small>'+chileTime24(gm.iso)+' hrs Chile</small>';
+    var sc=c.querySelector('.card-live-score'),at=c.querySelector('.mid .at'),status=at?at.textContent.trim().toUpperCase():'';
+    var res='<div class="tv-res"><small>'+(gm.odds?'Línea':'')+'</small></div>';
+    var cls='',past=false;
+    if(sc){
+      var p=sc.textContent.split(/[–-]/).map(function(x){return parseInt(x,10)}),mine=home?p[1]:p[0],theirs=home?p[0]:p[1];
+      if(status==='FINAL'){past=true;var win=mine>theirs,tie=mine===theirs;if(win)w++;else if(!tie)l++;
+        res='<div class="tv-res '+(win?'w':tie?'':'l')+'"><b>'+(win?'G ':tie?'E ':'P ')+mine+'-'+theirs+'</b><small>FINAL</small></div>';}
+      else res='<div class="tv-res live"><b>'+mine+'-'+theirs+'</b><small>EN VIVO</small></div>';
+    }else if(gm.odds){
+      var fav=TEAMS[gm.odds.favorite];res='<div class="tv-res"><span class="tv-line">'+esc(fav.name)+' -'+gm.odds.spread+'</span><small>O/U '+gm.odds.ou+'</small></div>';
+    }
+    var isNext=!past&&!sc&&!next&&d.getTime()>now-3*3600e3;
+    if(isNext)next={gm:gm,card:c,home:home,opp:opp,loc:loc};
+    var tags=Array.prototype.slice.call(c.querySelectorAll('.badges .badge')).filter(function(b){return !b.classList.contains('week-tag')}).slice(0,3).map(function(b){var hot=/rival|primetime|internac/i.test(b.textContent);return '<span class="tv-tag'+(hot?' hot':'')+'">'+esc(b.textContent.replace(/^[^\wÁ-ú]+/,'').trim())+'</span>'}).join('');
+    rows+='<button type="button" class="tv-row'+(isNext?' is-next':'')+(past?' is-past':'')+'" data-gi="'+esc(c.dataset.gameIndex)+'"><span class="tv-wk">'+gm.week+'</span><span class="tv-when">'+when+'</span><span class="tv-loc'+(home?' home':'')+'">'+(home?'VS':'@')+'</span><span class="tv-opp"><img src="'+teamLogo(opp)+'" alt=""><span><b>'+esc(O.name)+'</b><small>'+(home?'Local':'Visita')+' · '+esc(O.city)+' · '+esc(O.record)+'</small></span></span><span class="tv-tags">'+tags+'</span>'+res+'</button>';
+  });
+  var hdr='<div class="tv-head"><img class="tv-logo" src="'+teamLogo(team)+'" alt=""><div><div class="tv-kick">'+esc(T.division)+'</div><h2 class="tv-name">'+esc(T.city+' '+T.name)+'</h2><div class="tv-sub">'+esc(T.stadium)+'</div></div><div class="tv-stats"><div class="tv-stat"><b>'+w+'-'+l+'</b><small>2026</small></div><div class="tv-stat"><b>17</b><small>Partidos</small></div><div class="tv-stat"><b>'+(cards.length-17>0?cards.length-17:1)+'</b><small>Descanso</small></div></div></div>';
+  var nx=next?'<button type="button" class="tv-next" data-gi="'+GAMES.indexOf(next.gm)+'"><b>Próximo partido</b><img src="'+teamLogo(next.opp)+'" alt=""><span>Semana '+next.gm.week+' · '+(next.home?'vs ':'@ ')+esc(TEAMS[next.opp].city+' '+TEAMS[next.opp].name)+' · '+DAYS[next.loc.getDay()]+' '+next.loc.getDate()+'/'+(next.loc.getMonth()+1)+' · '+chileTime24(next.gm.iso)+' hrs</span><span class="tv-go">ABRIR →</span></button>':'';
+  var tbl='<div class="tv-table"><div class="tv-th"><span>Sem</span><span>Fecha</span><span></span><span>Rival</span><span>Transmisión</span><span style="text-align:right">Resultado / línea</span></div>'+rows+'</div>';
+  var wrap=document.createElement('div');wrap.className='tv-wrap';wrap.innerHTML=hdr+nx+tbl;
+  wrap.addEventListener('click',function(e){var b=e.target.closest('[data-gi]');if(!b)return;var c=g.querySelector(':scope > .card[data-game-index="'+b.dataset.gi+'"]');if(c)c.click()});
+  g.insertBefore(wrap,g.firstChild);
+}
+var busy=false,mo=new MutationObserver(function(){if(busy)return;clearTimeout(window.__tvT);window.__tvT=setTimeout(function(){busy=true;mo.disconnect();try{build()}catch(e){console.error('teamview',e)}finally{busy=false;var g=document.getElementById('games');if(g)mo.observe(g,{childList:true,subtree:true})}},120)});
+function start(){var g=document.getElementById('games');if(!g){setTimeout(start,400);return}mo.observe(g,{childList:true,subtree:true});build()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
+<script id="fdc-consent-js">
+/* Consentimiento + carga condicionada de Google AdSense.
+   1) Pon tu ID en FDC_ADSENSE_CLIENT (formato "ca-pub-XXXXXXXXXXXXXXXX") cuando AdSense te lo entregue.
+   2) Mientras esté vacío NO se carga ningún script de publicidad, aunque el usuario acepte. */
+(function(){
+var FDC_ADSENSE_CLIENT='ca-pub-4479325129802660';
+var KEY='fdc_consent_v1',box=document.getElementById('fdc-consent');
+function read(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){return null}}
+function save(ads){var v={ads:!!ads,ts:Date.now()};try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}return v}
+function loadAds(){
+  if(!FDC_ADSENSE_CLIENT||window.__fdcAdsLoaded)return;window.__fdcAdsLoaded=true;
+  var s=document.createElement('script');s.async=true;s.crossOrigin='anonymous';
+  s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='+encodeURIComponent(FDC_ADSENSE_CLIENT);
+  document.head.appendChild(s);
+}
+function apply(v){document.documentElement.setAttribute('data-ads-consent',v&&v.ads?'granted':'denied');if(v&&v.ads)loadAds()}
+function show(){if(!box)return;var v=read();document.getElementById('fc-ads').checked=!!(v&&v.ads);box.classList.remove('is-custom');box.hidden=false}
+function hide(){if(box)box.hidden=true}
+if(box){
+  document.getElementById('fc-accept').onclick=function(){apply(save(true));hide()};
+  document.getElementById('fc-reject').onclick=function(){apply(save(false));hide()};
+  document.getElementById('fc-custom').onclick=function(){
+    if(!box.classList.contains('is-custom')){box.classList.add('is-custom');this.textContent='Guardar selección';return}
+    apply(save(document.getElementById('fc-ads').checked));hide();this.textContent='Personalizar';
+  };
+  var o=document.getElementById('fdc-open-consent');if(o)o.onclick=show;
+}
+window.fdcConsent={get:read,open:show};
+var v=read();if(v)apply(v);else{apply(null);setTimeout(show,900)}
+})();
 </script>
 </body></html>

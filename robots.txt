@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# Rastreador de anuncios de Google (necesario para que AdSense lea el contenido)
+User-agent: Mediapartners-Google
+Allow: /
+
 Sitemap: https://firstdownchile.com/sitemap.xml
